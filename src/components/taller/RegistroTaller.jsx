@@ -1,6 +1,6 @@
-import React from 'react'
-import FormContainer from './FormContainer'
-import {Form,Button} from 'react-bootstrap'
+import React from 'react';
+import FormContainer from '../FormContainer';
+import {Form,Button} from 'react-bootstrap';
 function RegistroTaller() {
     
   return (

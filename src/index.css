@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.login,
+.image {
+  min-height: 100vh;
+}
+.bg-image {
+  background-color:  rgb(39, 176, 255) ;
+  background-image: url('./static/img/123.svg');
+  background-size: cover;
+  background-position: center center;
+}
