@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,7 +22,7 @@ root.render(
     <div>
       <Routes>
         <Route exact path='/' element={<LoginR/>}/>
-        <Route path='/sign_in' element={<RegistroUsuario/>}/>
+        <Route path='/sign_up' element={<RegistroUsuario/>}/>
       </Routes>
     </div>
   </BrowserRouter>

@@ -1,73 +1,84 @@
-import React from "react";
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../index.css";
 
-const login = () => {
-    const navigate = useNavigate();
+import * as UserServer from './UserServer';
 
-    const [user,setUser] = useState([]);
+const Login = () => {
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
-        const user_conected = await UserServer.userConected()
-    };
+  const [user, setUser] = useState([]);
 
-    const handleInputChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const user_conected = await UserServer.userConected();
+  };
+
+  const handleInputChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="maincontainer">
-      <div class="container-fluid">
-        <div class="row no-gutter">
-          <div class="col-md-6 d-none d-md-flex bg-image"></div>
+      <div className="container-fluid">
+        <div className="row no-gutter">
+          <div className="col-md-6 d-none d-md-flex bg-image"></div>
 
-          <div class="col-md-6 bg-light">
-            <div class="login d-flex align-items-center py-5">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-10 col-xl-7 mx-auto">
-                    <h3 class="display-4 text-center">C A R P E N</h3>
-                    <p class="text-muted mb-4 text-center">
+          <div className="col-md-6 bg-light">
+            <div className="login d-flex align-items-center py-5">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-10 col-xl-7 mx-auto">
+                    <h3 className="display-4 text-center">C A R P E N</h3>
+                    <p className="text-muted mb-4 text-center">
                       Ingresa tu Correo y Contraseña.
                     </p>
                     <form onSubmit={handleSubmit}>
-                      <div class="mb-3">
+                      <div className="mb-3">
                         <input
                           id="inputEmail"
                           type="email"
                           placeholder="Direccion de Correo Electronico"
-                          required=""
-                          autofocus=""
-                          class="form-control rounded-pill border-0 shadow-sm px-4"
+                          autoFocus=""
+                          className="form-control rounded-pill border-0 shadow-sm px-4"
+                          name="email" value={user.email} onChange={handleInputChange} required
                         />
                       </div>
-                      <div class="mb-3">
+                      <div className="mb-3">
                         <input
                           id="inputPassword"
                           type="password"
                           placeholder="Contraseña"
-                          required=""
-                          class="form-control rounded-pill border-0 shadow-sm px-4 text-primary"
+                          className="form-control rounded-pill border-0 shadow-sm px-4 text-primary"
+                          name="password" value={user.password} onChange={handleInputChange} required
                         />
                       </div>
-                      <div class="form-check">
+                      <div className="form-check">
                         <input
                           id="customCheck1"
                           type="checkbox"
-                          checked
-                          class="form-check-input"
+                          className="form-check-input"
                         />
-                        <label for="customCheck1" class="form-check-label">
+                        <label htmlFor="customCheck1" className="form-check-label">
                           Recordarme
                         </label>
                       </div>
-                      <div class="d-grid gap-2 mt-2">
+                      <div className="d-grid gap-2 mt-2">
                         <button
                           type="submit"
-                          class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                          className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                         >
-                          Iniciar
+                          Login
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                          onClick={() => navigate(`/sign_up`)}
+                        >
+                          Sign Up
                         </button>
                       </div>
                     </form>
@@ -81,4 +92,4 @@ const login = () => {
     </div>
   );
 };
-export default login;
+export default Login;
