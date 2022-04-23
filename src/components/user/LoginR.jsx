@@ -5,20 +5,47 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../index.css";
 
+import {alert_success,alert_error, verContraseña} from "../../static/js/functions.js";
+
 import * as UserServer from './UserServer';
+import { Image } from 'react-bootstrap';
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState([]);
+  const valores_iniciales = {
+    email: "",
+    password: "",
+  };
+  
+  const [user, setUser] = useState(valores_iniciales);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user_conected = await UserServer.userConected();
+    try {
+      const usuario = upperCase();
+      const user_conected = await UserServer.userConected(usuario)
+      const data = await user_conected.json();
+      if(data.user.error==="vacio"){
+        alert_error('Error',data.user.message);
+      }else{
+        alert_success('Éxito!','Bienvenido(a) '+data.user.nombre+" "+data.user.apellido);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  function upperCase(){
+    const valores_iniciales = {
+      email: user.email.toUpperCase(),
+      password: user.password,
+    };
+    return valores_iniciales;
   };
 
   return (
@@ -26,7 +53,6 @@ const Login = () => {
       <div className="container-fluid">
         <div className="row no-gutter">
           <div className="col-md-6 d-none d-md-flex bg-image"></div>
-
           <div className="col-md-6 bg-light">
             <div className="login d-flex align-items-center py-5">
               <div className="container">

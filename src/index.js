@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 
 import LoginR from './components/user/LoginR';
-import LoginForm from './components/user/LoginForm';
 import RegistroUsuario from './components/user/RegistroUsuario';
 
 import CarroList from './components/carro/CarroList';

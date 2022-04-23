@@ -32,6 +32,7 @@ input[type=number] {
   background-image: url('./static/img/123.svg');
   background-size: cover;
   background-position: center center;
+  filter: blur(3px);
 }
 
 /*Registro Usuario*/
@@ -96,4 +97,9 @@ body, html, .App, #root, .auth-wrapper {
 }
 .forgot-password a {
   color: #167bff;
+}
+
+/*Ver Contraseña Function*/
+.figure-password{
+  
 }

@@ -1,12 +1,11 @@
 const API_URL =  "http://127.0.0.1:8099/usuarios/"
-//const API_URL =  "http://34.211.154.52:8099/usuarios/"
 
-export const userConected = async ()=>{
-     return await fetch(API_URL);
+export const userConected = async (user)=>{
+     return await fetch(API_URL+'sign_in/?email='+user.email+'&password='+user.password);
 };
 
 export const userRegister = async(user)=>{
-     return await fetch(API_URL,{
+      return await fetch(API_URL,{
           method:'POST',
           headers:{
                'Content-Type':'application/json',
