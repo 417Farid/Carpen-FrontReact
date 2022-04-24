@@ -29,7 +29,7 @@ input[type=number] {
 }
 .bg-image {
   background-color:  rgb(39, 176, 255) ;
-  background-image: url('./static/img/123.svg');
+  background-image: url('../public/img/login.svg');
   background-size: cover;
   background-position: center center;
   filter: blur(3px);

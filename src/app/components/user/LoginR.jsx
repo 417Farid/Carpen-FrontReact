@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import "../../index.css";
+import "../../../index.css";
 
-import {alert_success,alert_error, verContraseña} from "../../static/js/functions.js";
+import {alert_success,alert_error, verContraseña} from "../../util/functions.js";
 
 import * as UserServer from './UserServer';
 import { Image } from 'react-bootstrap';
@@ -29,7 +29,9 @@ const Login = () => {
       if(data.user.error==="vacio"){
         alert_error('Error',data.user.message);
       }else{
-        alert_success('Éxito!','Bienvenido(a) '+data.user.nombre+" "+data.user.apellido);
+        alert_success('Éxito!','Bienvenido(a) '+data.user.nombre+" "+data.user.apellido).then(()=>{
+          navigate('/home');
+        });
       }
     } catch (error) {
       console.log(error);

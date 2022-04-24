@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import * as functions from "../../static/js/functions.js";
-import "../../index.css";
+import * as functions from "../../util/functions.js";
+import "../../../index.css";
 
 import * as UserServer from "./UserServer";
 

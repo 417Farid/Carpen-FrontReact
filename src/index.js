@@ -5,14 +5,16 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 
-import LoginR from './components/user/LoginR';
-import RegistroUsuario from './components/user/RegistroUsuario';
+import LoginR from './app/components/user/LoginR';
+import RegistroUsuario from './app/components/user/RegistroUsuario';
 
-import CarroList from './components/carro/CarroList';
-import RegistroCarro from './components/carro/RegistroCarro';
+import Dashboard from './app/components/home/Dashboard';
 
-import TallerList from './components/taller/TallerList.jsx';
-import RegistroTaller from './components/taller/RegistroTaller';
+import CarroList from './app/components/carro/CarroList';
+import RegistroCarro from './app/components/carro/RegistroCarro';
+
+import TallerList from './app/components/taller/TallerList.jsx';
+import RegistroTaller from './app/components/taller/RegistroTaller';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,6 +24,7 @@ root.render(
       <Routes>
         <Route exact path='/' element={<LoginR/>}/>
         <Route path='/sign_up' element={<RegistroUsuario/>}/>
+        <Route path='/home' element={<Dashboard/>}/>
       </Routes>
     </div>
   </BrowserRouter>
