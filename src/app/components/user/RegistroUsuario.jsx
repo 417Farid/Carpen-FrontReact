@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import * as functions from "../../util/functions.js";
+import {alert_success,alert_error,verificarCamposRegister} from "../../util/functions.js";
 import "../../../index.css";
 
-import * as UserServer from "./UserServer";
+import * as authService from "../../auth/auth.service";
 
 function RegistroUsuario() {
   const navigate = useNavigate();
 
   const valores_iniciales = {
-    nombre: "",
-    apellido: "",
+    first_name: "Yoner",
+    last_name: "Silva",
     tipoDocumento: "",
-    numeroDocumento: "",
-    ciudad: "",
-    email: "",
-    password: "",
+    numeroDocumento: "1004842818",
+    ciudad: "cucuta",
+    email: "jhonerasl38@gmail.com",
+    password: "Roger123",
   };
 
   const [user, setUser] = useState(valores_iniciales);
@@ -26,13 +26,16 @@ function RegistroUsuario() {
     e.preventDefault();
     try {
       const usuario = upperCase();
-      await UserServer.userRegister(usuario).then(() => {
-          functions.alert_success("Usuario Creado con éxito.", "Bienvenido "+usuario.nombre+" "+usuario.apellido+".");
+      const request = await authService.sign_up(usuario);
+      await request.json().then((value)=>{
+        if(value.error===''){
+          alert_success("Usuario Creado con éxito.", "Bienvenido "+usuario.first_name+" "+usuario.last_name+".");
           navigate("/");
-        }).catch((error) => {
-          console.log(error);
-      });
-    } catch (error) {
+        }else{ 
+          alert_error(value.error, value.message); 
+        }
+      });        
+    } catch(error) {
       console.log(error);
     }
   };
@@ -43,8 +46,8 @@ function RegistroUsuario() {
 
   function upperCase(){
     const valores_iniciales = {
-      nombre: firstCharUpper(user.nombre),
-      apellido: firstCharUpper(user.apellido),
+      first_name: firstCharUpper(user.first_name),
+      last_name: firstCharUpper(user.last_name),
       tipoDocumento: user.tipoDocumento.toUpperCase(),
       numeroDocumento: user.numeroDocumento,
       ciudad: firstCharUpper(user.ciudad),
@@ -94,8 +97,8 @@ function RegistroUsuario() {
                           type="text"
                           className="form-control"
                           placeholder="Nombres"
-                          name="nombre"
-                          value={user.nombre}
+                          name="first_name"
+                          value={user.first_name}
                           onChange={handleInputChange}
                           required
                         />
@@ -107,8 +110,8 @@ function RegistroUsuario() {
                           type="text"
                           className="form-control"
                           placeholder="Apellidos"
-                          name="apellido"
-                          value={user.apellido}
+                          name="last_name"
+                          value={user.last_name}
                           onChange={handleInputChange}
                           required
                         />
@@ -187,7 +190,7 @@ function RegistroUsuario() {
                           id="btn_register_user"
                           type="button"
                           className="btn btn-primary btn-block my-2"
-                          onClick={()=>{functions.verificarCamposRegister()}}
+                          onClick={()=>{verificarCamposRegister()}}
                         >
                           Sign Up
                         </button>

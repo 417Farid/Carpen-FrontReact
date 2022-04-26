@@ -1,14 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from "react";
-
+import React, { useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../../index.css";
-
-import {alert_success,alert_error, verContraseña} from "../../util/functions.js";
-
-import * as UserServer from './UserServer';
-import { Image } from 'react-bootstrap';
+import {alert_success,alert_error} from "../../util/functions";
+import * as authService from '../../auth/auth.service.js';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,15 +20,17 @@ const Login = () => {
     e.preventDefault();
     try {
       const usuario = upperCase();
-      const user_conected = await UserServer.userConected(usuario)
-      const data = await user_conected.json();
-      if(data.user.error==="vacio"){
-        alert_error('Error',data.user.message);
-      }else{
-        alert_success('Éxito!','Bienvenido(a) '+data.user.nombre+" "+data.user.apellido).then(()=>{
-          navigate('/home');
-        });
-      }
+      const user_conected = await authService.sign_in(usuario)
+      await user_conected.json().then((data)=>{
+        if(data.user.token===""){
+          alert_error('Error',data.user.message);
+        }else{
+          authService.userConected(data.user);
+          alert_success('Éxito!','Bienvenido(a) '+data.user.data.first_name+" "+data.user.data.last_name);
+          if(data.user.token!=='')
+            navigate("/home")
+        }
+      });
     } catch (error) {
       console.log(error);
     }

@@ -29,7 +29,7 @@ export function verificarCamposRegister() {
      if (nombre === "" || apellido === "" || tipoDocumento === "" || numeroDocumento === "" || ciudad === "" || email === "" || password === "") {
           alert_error("Oops...!", "Los campos no pueden estar vacios.");
      } else {
-          if(verificarContraseña()){
+          if (verificarContraseña()) {
                let button = document.getElementById("btn_register_user");
                button.setAttribute('type', 'submit');
           }
@@ -62,27 +62,7 @@ function verificarContraseña() {
                return true;
           }
      } else {
-          alert_error("Error","La contraseña debe tener como minimo 8 caracteres. \n Además, la contraseña debe tener al menos una letra mayuscula, una minuscula y un numero.");
+          alert_error("Error", "La contraseña debe tener como minimo 8 caracteres. \n Además, la contraseña debe tener al menos una letra mayuscula, una minuscula y un numero.");
           return false;
-     }
-}
-
-export function verContraseña() {
-     let password = document.getElementById("password");
-     let c_password;
-     if (document.title == "Registrar Usuario" || document.title == "Editar Usuario") {
-         c_password = document.getElementById("c-password");
-     }
-     let eye = document.getElementById("password-eye");
-     if (password.type == "password") {
-         eye.setAttribute("src", "/img/icons/eye-regular.svg");
-         password.setAttribute("type", "text");
-         if (password !== undefined) {
-             c_password.setAttribute("type", "text");
-         }
-     } else {
-         eye.setAttribute("src", "/img/icons/eye-slash-regular.svg");
-         password.setAttribute("type", "password");
-         c_password.setAttribute("type", "password");
      }
 }

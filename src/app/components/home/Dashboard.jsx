@@ -18,7 +18,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogOutIcon from '@mui/icons-material/Logout';
 import { mainListItems } from './listItems';
 import CarroList from '../carro/CarroList';
-import NoCar from '../carro/NoCar';
 import Title from './Title';
 
 
@@ -163,8 +162,7 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Title>Mis Vehiculos</Title>
-            {/*<CarroList/>*/}
-            <NoCar/>
+              <CarroList/>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
