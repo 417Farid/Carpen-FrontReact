@@ -17,8 +17,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogOutIcon from '@mui/icons-material/Logout';
 import { mainListItems } from './listItems';
-import CarroList from '../carro/CarroList';
-import Title from './Title';
+import CarRegister from '../carro/RegistroCarro';
+import UserManager from '../user/UserManager';
 
 
 function Copyright(props) {
@@ -160,10 +160,9 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Title>Mis Vehiculos</Title>
-              <CarroList/>
-            <Copyright sx={{ pt: 4 }} />
+          <Container maxWidth="lg" sx={{ mt: 1, mb: 1 }}>
+              <UserManager/>
+            <Copyright sx={{ pt: 1 }} />
           </Container>
         </Box>
       </Box>
