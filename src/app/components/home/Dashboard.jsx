@@ -22,8 +22,8 @@ import Title from './Title';
 import * as authService from '../../auth/auth.service'
 import {useNavigate}  from 'react-router-dom';
 import {alert_logout} from "../../util/functions";
-
-
+import CarRegister from '../carro/RegistroCarro';
+import UserManager from '../user/UserManager';
 
 function Copyright(props) {
   return (
@@ -171,10 +171,9 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Title>Mis Vehiculos</Title>
-              <CarroList/>
-            <Copyright sx={{ pt: 4 }} />
+          <Container maxWidth="lg" sx={{ mt: 1, mb: 1 }}>
+              <UserManager/>
+            <Copyright sx={{ pt: 1 }} />
           </Container>
         </Box>
       </Box>
