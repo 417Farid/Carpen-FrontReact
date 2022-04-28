@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import Grid from '@mui/material/Grid';
-import { ResponsiveContainer } from 'recharts';
 
 import Card from './Card'
 import NoCar from './NoCar';

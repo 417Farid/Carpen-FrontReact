@@ -38,20 +38,20 @@ export const sign_up = async (user) => {
 };
 
 export const sign_in = async (user)=>{
-  return await fetch(API_URL+"usuarios/"+'sign_in/?email='+user.email+'&password='+user.password);
+  return await (await (fetch(API_URL+"usuarios/"+'sign_in/?email='+user.email+'&password='+user.password))).json();
 };
 
-export const userConected = (user)=>{
-  localStorage.setItem("user",JSON.stringify(user));
+export const userConected = async(token)=>{
+  await localStorage.setItem("token",token);
 };
 
-export const logout = () => {
-  localStorage.removeItem("user");
+export const logout =() => {
+  localStorage.removeItem("token");
 };
 
-export const getCurrentUser = () => {
-  const user = localStorage.getItem("user");
-  return JSON.parse(user.data);
+export const getUserToken = () => {
+  const token = localStorage.getItem("token");
+  return token;
 };
 
 /*--------------------------------END------------------------------------*/

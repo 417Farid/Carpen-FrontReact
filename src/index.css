@@ -29,6 +29,9 @@ input[type=number] {
 }
 .bg-image {
   background-color:  rgb(39, 176, 255) ;
+  border-style: solid;
+  border-image-outset: 2px;
+  border-color: #1C8EF9;
   background-image: url('../public/img/login.svg');
   background-size: cover;
   background-position: center center;
@@ -36,12 +39,8 @@ input[type=number] {
 }
 
 /*Registro Usuario*/
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
-* {
-  box-sizing: border-box;
-}
+
 body {
-  background: #1C8EF9 !important;
   min-height: 100vh;
   display: flex;
   font-weight: 400;

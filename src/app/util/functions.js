@@ -3,12 +3,38 @@ import Swal from "sweetalert2";
 
 
 export function alert_success(success, message) {
-     Swal.fire(
-          success,
-          message,
-          'success',
-     );
+     Swal.fire({
+          icon: 'success',
+          title: String(success).trim(),
+          text: String(message).trim(),
+          showConfirmButton: false,
+          timer: 1500
+     });
 };
+
+export function alert_logout() {
+     let timerInterval
+     Swal.fire({
+          title: 'Cerrando Sesión!',
+          timer: 2500,
+          timerProgressBar: true,
+          didOpen: () => {
+               Swal.showLoading()
+               const b = Swal.getHtmlContainer().querySelector('b')
+               timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+               }, 100)
+          },
+          willClose: () => {
+               clearInterval(timerInterval)
+          }
+     }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+               console.log('I was closed by the timer')
+          }
+     })
+}
 
 export function alert_error(error, message) {
      Swal.fire({

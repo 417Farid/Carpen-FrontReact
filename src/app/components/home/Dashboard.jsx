@@ -19,6 +19,10 @@ import LogOutIcon from '@mui/icons-material/Logout';
 import { mainListItems } from './listItems';
 import CarroList from '../carro/CarroList';
 import Title from './Title';
+import * as authService from '../../auth/auth.service'
+import {useNavigate}  from 'react-router-dom';
+import {alert_logout} from "../../util/functions";
+
 
 
 function Copyright(props) {
@@ -84,6 +88,9 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+
+  const navigate = useNavigate();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -124,8 +131,12 @@ function DashboardContent() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
-                <LogOutIcon/>
+            <IconButton color="inherit" onClick={()=>{
+              authService.logout();
+              alert_logout();
+              setTimeout(()=>navigate("/"),2500);
+              }}>
+                <LogOutIcon />
             </IconButton>
           </Toolbar>
         </AppBar>

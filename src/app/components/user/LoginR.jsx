@@ -20,17 +20,15 @@ const Login = () => {
     e.preventDefault();
     try {
       const usuario = upperCase();
-      const user_conected = await authService.sign_in(usuario)
-      await user_conected.json().then((data)=>{
-        if(data.user.token===""){
-          alert_error('Error',data.user.message);
-        }else{
-          authService.userConected(data.user);
-          alert_success('Éxito!','Bienvenido(a) '+data.user.data.first_name+" "+data.user.data.last_name);
-          if(data.user.token!=='')
-            navigate("/home")
-        }
-      });
+      const response = await authService.sign_in(usuario);
+      if(response.token===""){
+        alert_error('Error',response.user.message);
+      }else{
+        await authService.userConected(response.token).then(()=>{
+          alert_success('Éxito!','Bienvenido(a)');
+          setTimeout(()=>navigate("/home"),2000);
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -92,16 +90,16 @@ const Login = () => {
                           Recordarme
                         </label>
                       </div>
-                      <div className="d-grid gap-2 mt-2">
+                      <div className="row row-cols-2 justify-content-evenly mt-4">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                          className="col-5 btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                         >
                           Login
                         </button>
                         <button
                           type="button"
-                          className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                          className="col-5 col-sm-4 btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                           onClick={() => navigate(`/sign_up`)}
                         >
                           Sign Up
