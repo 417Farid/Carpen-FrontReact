@@ -3,7 +3,7 @@ import React, { useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../../index.css";
-import {alert_success,alert_error} from "../../util/functions";
+import {alert_login,alert_error} from "../../util/functions";
 import * as authService from '../../auth/auth.service.js';
 
 const Login = () => {
@@ -25,7 +25,7 @@ const Login = () => {
         alert_error('Error',response.user.message);
       }else{
         await authService.userConected(response.token).then(()=>{
-          alert_success('Éxito!','Bienvenido(a)');
+          alert_login('Éxito!','Bienvenido(a)');
           setTimeout(()=>navigate("/home"),2000);
         });
       }
@@ -95,14 +95,14 @@ const Login = () => {
                           type="submit"
                           className="col-5 btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                         >
-                          Login
+                          Entrar
                         </button>
                         <button
                           type="button"
-                          className="col-5 col-sm-4 btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                          className="col-5 col-sm-5 btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                           onClick={() => navigate(`/sign_up`)}
                         >
-                          Sign Up
+                          Registrarse
                         </button>
                       </div>
                     </form>

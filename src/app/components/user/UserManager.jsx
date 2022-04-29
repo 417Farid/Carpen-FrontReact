@@ -1,6 +1,7 @@
 import React from "react";
 import { ResponsiveContainer } from 'recharts';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 
 function UserManager() {
@@ -12,7 +13,7 @@ function UserManager() {
                         <h2 className="py-5">Administrador de Usuarios</h2>
                     </div>
                     <div className="col-lg-10 col-xl-15 mx-auto" id="contenedor-div">
-                        <table id="example" class="table table-striped">
+                        <table id="example" className="table table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -31,15 +32,15 @@ function UserManager() {
                                     <td>Andre</td>
                                     <td>faridandredo@ufps.edu.co</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button id="dropdown-button" class="btn btn-primary dropdown-toggle" type="button"
+                                        <div className="dropdown">
+                                            <button id="dropdown-button" className="btn btn-primary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 Opciones
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-primary" aria-labelledby="dropdownMenuButton2">
-                                                <li><a class="dropdown-item" href="Editar_User.html">Modificar</a>
+                                            <ul className="dropdown-menu dropdown-menu-primary" aria-labelledby="dropdownMenuButton2">
+                                                <li><a className="dropdown-item" href="Editar_User.html">Modificar</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">Eliminar</a>
+                                                <li><a className="dropdown-item" href="#">Eliminar</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -52,15 +53,15 @@ function UserManager() {
                                     <td>Ricciardo</td>
                                     <td>danielricc@redbull.com</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button id="dropdown-button" class="btn btn-primary dropdown-toggle" type="button"
+                                        <div className="dropdown">
+                                            <button id="dropdown-button" className="btn btn-primary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 Opciones
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                                <li><a class="dropdown-item" href="Editar_User.html">Modificar</a>
+                                            <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                                <li><a className="dropdown-item" href="Editar_User.html">Modificar</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">Eliminar</a>
+                                                <li><a className="dropdown-item" href="#">Eliminar</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -73,15 +74,15 @@ function UserManager() {
                                     <td>Jobs</td>
                                     <td>rip@apple.com</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button id="dropdown-button" class="btn btn-primary dropdown-toggle" type="button"
+                                        <div className="dropdown">
+                                            <button id="dropdown-button" className="btn btn-primary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 Opciones
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                                <li><a class="dropdown-item" href="Editar_User.html">Modificar</a>
+                                            <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                                <li><a className="dropdown-item" href="Editar_User.html">Modificar</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="#">Eliminar</a>
+                                                <li><a className="dropdown-item" href="#">Eliminar</a>
                                                 </li>
                                             </ul>
                                         </div>

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ResponsiveContainer } from 'recharts';
+import { alert_detail_vehiculo } from '../../util/functions';
 
-export default function Card({vehiculo, listVehiculos}) {
+export default function Card({vehiculo}) {
 
   
   return (
@@ -14,7 +15,7 @@ export default function Card({vehiculo, listVehiculos}) {
             <p className="card-text"><span className='fw-bold'>Placa: </span>{vehiculo.placa}</p>
             <p className="card-text"><span className='fw-bold'>Conductor: </span>{vehiculo.nombreConductor}</p>
             <div className='d-flex justify-content-evenly'>
-              <button type="button" className="btn btn-outline-primary">Ver Detalles</button>
+              <button type="button" className="btn btn-outline-primary" onClick={async()=>{await alert_detail_vehiculo(vehiculo)}}>Ver Detalles</button>
               <button type="button" className="btn btn-outline-danger">Eliminar</button>
             </div>
           </div>

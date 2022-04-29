@@ -11,13 +11,13 @@ function RegistroUsuario() {
   const navigate = useNavigate();
 
   const valores_iniciales = {
-    first_name: "Yoner",
-    last_name: "Silva",
+    first_name: "",
+    last_name: "",
     tipoDocumento: "",
-    numeroDocumento: "1004842818",
-    ciudad: "cucuta",
-    email: "jhonerasl38@gmail.com",
-    password: "Roger123",
+    numeroDocumento: "",
+    ciudad: "",
+    email: "",
+    password: "",
   };
 
   const [user, setUser] = useState(valores_iniciales);
@@ -88,7 +88,7 @@ function RegistroUsuario() {
               <div className="container">
                 <div className="row">
                   <div className="col-lg-10 col-xl-7 mx-auto">
-                    <h3 className="display-4 text-center">SIGN UP</h3>
+                    <h3 className="display-4 text-center">Registrarse</h3>
                     <form onSubmit={handleSubmit} >
                       <div className="form-group">
                         <label>Nombres</label>
@@ -192,13 +192,13 @@ function RegistroUsuario() {
                           className="btn btn-primary btn-block my-2"
                           onClick={()=>{verificarCamposRegister()}}
                         >
-                          Sign Up
+                          Registrarse
                         </button>
                       </div>
                       <p className="forgot-password text-right">
                         Already registered{" "}
                         <a type="button" href="/">
-                          sign in?
+                          iniciar sesión?
                         </a>
                       </p>
                     </form>

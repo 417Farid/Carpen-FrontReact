@@ -37,8 +37,8 @@ function CarroList() {
                         return (
                             <Grid container spacing={{ xs: 1, sm: 2 ,md: 4 }} columns={{ xs: 1, sm: 2, md: 3}}>
                                 {vehiculos.map((vehiculo) => (
-                                    <Grid item xs={1}>
-                                        <Card key={vehiculo.id} vehiculo={vehiculo} listVehiculos={listVehiculos}/>
+                                    <Grid key={vehiculo.id} item xs={1}>
+                                        <Card key={vehiculo.id} vehiculo={vehiculo}/>
                                     </Grid>
                                 ))}
                             </Grid>

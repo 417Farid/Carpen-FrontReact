@@ -1,8 +1,39 @@
 //Alertas Bonitas
 import Swal from "sweetalert2";
 
+export async function alert_detail_vehiculo(vehiculo){
+     let html = printVehiculo(vehiculo);
+     Swal.fire({
+          title: 'Vehiculo',
+          text: "Hola\n"+"Mundo",
+          imageUrl: vehiculo.foto,
+          imageHeight: 200,
+          imageAlt: 'Vehiculo Img',
+     })
+};
 
-export function alert_success(success, message) {
+function printVehiculo(vehiculo){
+     let html = 
+          "Marca: "+vehiculo.marca +"\
+          "+"\nModelo: "+vehiculo.modelo+"\
+          "+"\nLinea: "+vehiculo.linea+"\
+          "+"\nColor: "+vehiculo.color+"\
+          "+"\nPlaca: "+vehiculo.placa+"\
+          "+"\nTipo Combustible: "+vehiculo.tipoCombustible+"\
+          "+"\nNúmero Serie: "+vehiculo.numeroSerie+"\
+          "+"\nNúmero Motor: "+vehiculo.numeroMotor+"\
+          "+"\nKilometraje Actual: "+vehiculo.kilometrajeActual+"\
+          "+"\nKilometraje Último Mantenimiento: "+vehiculo.kilometrajeUltimoMantenimiento+"\
+          "+"\nNombre Conductor: "+vehiculo.nombreConductor+"\
+          "+"\nFecha Soat: "+vehiculo.fechaSoat+"\
+          "+"\nFecha Técnico Mécanica: "+vehiculo.fechaTecnicoMecanica+"\
+          "+"\nFecha Matricula: "+vehiculo.fechaMatricula+"\
+          "+"\nFecha Registro: "+vehiculo.fechaRegistro+"";
+     console.log(html);
+     return html;
+}
+
+export function alert_login(success, message) {
      Swal.fire({
           icon: 'success',
           title: String(success).trim(),
@@ -10,6 +41,14 @@ export function alert_success(success, message) {
           showConfirmButton: false,
           timer: 1500
      });
+};
+
+export function alert_success(success, message){
+     Swal.fire(
+          success,
+          message,
+          'success',
+     );
 };
 
 export function alert_logout() {

@@ -172,7 +172,8 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 1, mb: 1 }}>
-              <UserManager/>
+            <Title>Mis Vehiculos</Title>
+            <CarroList/>
             <Copyright sx={{ pt: 1 }} />
           </Container>
         </Box>
