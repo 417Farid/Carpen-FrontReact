@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../../index.css";
 import {alert_login,alert_error} from "../../util/functions";
+import { sign_in_firebase } from "../../util/firebase.js";
 import * as authService from '../../auth/auth.service.js';
 
 const Login = () => {
@@ -21,11 +22,12 @@ const Login = () => {
     try {
       const usuario = upperCase();
       const response = await authService.sign_in(usuario);
-      if(response.token===""){
+      if(response.user.token===""||response.user.token==="undefined"){
         alert_error('Error',response.user.message);
       }else{
-        await authService.userConected(response.token).then(()=>{
-          alert_login('Éxito!','Bienvenido(a)');
+        await authService.userConected(response).then(()=>{
+          sign_in_firebase(usuario.email,usuario.password);
+          alert_login('Éxito!','Bienvenido(a) '+response.user.first_name+" "+response.user.last_name);
           setTimeout(()=>navigate("/home"),2000);
         });
       }

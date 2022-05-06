@@ -1,6 +1,8 @@
 //Alertas Bonitas
 import Swal from "sweetalert2";
 
+import {cargarImagen} from "./firebase";
+
 export async function alert_detail_vehiculo(vehiculo){
      let html = printVehiculo(vehiculo);
      Swal.fire({
@@ -44,11 +46,13 @@ export function alert_login(success, message) {
 };
 
 export function alert_success(success, message){
-     Swal.fire(
-          success,
-          message,
-          'success',
-     );
+     Swal.fire({
+          title: success,
+          text: message,
+          icon:'success',
+          showConfirmButton: false,
+          timer: 1500
+     });
 };
 
 export function alert_logout() {
@@ -100,6 +104,21 @@ export function verificarCamposRegister() {
           }
      }
 };
+
+/*export async function agregar_vehiculo(){
+     let index = 0;
+     document.querySelectorAll('input').forEach( input => {
+          if (index!==12) {
+               console.log(index+": "+input.value);
+               if(input.value===""){
+                    alert_error("Oops...!", "Los campos no pueden estar vacios.");
+                    return;
+               }
+          }
+          index++;
+     });
+     cargarImagen("vehiculos");
+};*/
 
 function verificarContraseña() {
      let password = document.getElementById('password').value;

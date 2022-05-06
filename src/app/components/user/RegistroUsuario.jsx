@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import {alert_success,alert_error,verificarCamposRegister} from "../../util/functions.js";
+import { createUserFirebase } from "../../util/firebase.js";
 import "../../../index.css";
 
 import * as authService from "../../auth/auth.service";
@@ -29,6 +30,7 @@ function RegistroUsuario() {
       const request = await authService.sign_up(usuario);
       await request.json().then((value)=>{
         if(value.error===''){
+          createUserFirebase(usuario.email,usuario.password);
           alert_success("Usuario Creado con éxito.", "Bienvenido "+usuario.first_name+" "+usuario.last_name+".");
           navigate("/");
         }else{ 
@@ -128,7 +130,6 @@ function RegistroUsuario() {
                         >
                           <option defaultValue={""} hidden value="">Tipo</option>
                           <option value="C.C">C.C</option>
-                          <option value="T.I">T.I</option>
                           <option value="C.E">C.E</option>
                           <option value="PP">PP</option>
                         </select>
