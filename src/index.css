@@ -98,7 +98,8 @@ body, html, .App, #root, .auth-wrapper {
   color: #167bff;
 }
 
-/*Ver Contraseña Function*/
-.figure-password{
-  
+/*Campo Requerido * */
+.required:after {
+  content: "(*)";
+  color: red;
 }

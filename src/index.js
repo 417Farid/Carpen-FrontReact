@@ -7,10 +7,6 @@ import * as authService from './app/auth/auth.service'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-/*window.addEventListener("beforeunload", function (e) {
-  authService.logout();                         //Webkit, Safari, Chrome
-});*/
-
 root.render(
   <React.StrictMode>
     <App/>

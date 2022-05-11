@@ -1,15 +1,15 @@
-import { async } from "@firebase/util";
-import authHeader from "./auth-header";
+import { eliminarImagen } from "../util/firebase";
 
-const API_URL = "http://127.0.0.1:8099/"
+const API_URL_VEHICULOS = "http://127.0.0.1:8099/";
+const API_URL_TALLERES = "http://127.0.0.1:8080/";
+
 //const API_AUTH_TOKEN = "http://127.0.0.1:8099/api-generate-token/"
-
 
 /*--------------------------------USUARIO------------------------------------*/
 export const asignar_rol = async(usuario)=>{
   const id_rol_user = 2;
 
-  return await fetch(API_URL + "usuario_roles/", {
+  return await fetch(API_URL_VEHICULOS + "usuario_roles/", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -21,11 +21,17 @@ export const asignar_rol = async(usuario)=>{
   });
 };
 
+export const user_list = async()=>{
+  return await (await fetch(API_URL_VEHICULOS+"usuarios/")).json();
+};
+
 export const sign_up = async (user) => {
-  const usuario = await fetch(API_URL + "usuarios/", {
+  const auth_token = getUserToken();
+  const usuario = await fetch(API_URL_VEHICULOS + "usuarios/", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      "Authorization": 'Token '+ auth_token,
     },
     body: JSON.stringify({
       'username': String(user.email).trim(),
@@ -36,7 +42,7 @@ export const sign_up = async (user) => {
       'ciudad': String(user.ciudad).trim(),
       'email': String(user.email).trim(),
       'password': String(user.password).trim(),
-      'roles': [1,2],
+      'roles': [2],
       "url":"",
     }),
   });
@@ -44,7 +50,7 @@ export const sign_up = async (user) => {
 };
 
 export const sign_in = async(user) => {
-  return await (await (fetch(API_URL+"usuarios/"+'sign_in/?email='+user.email+'&password='+user.password))).json();
+  return await (await (fetch(API_URL_VEHICULOS+"usuarios/"+'sign_in/?email='+user.email+'&password='+user.password))).json();
 };
 
 export const userConected = async (response) => {
@@ -70,11 +76,12 @@ export const getUser = async() => {
 
 /*--------------------------------VEHICULOS------------------------------------*/
 export const addVehiculo = async (vehiculo) => {
-  return await fetch(API_URL + "vehiculos/", {
+  const auth_token = getUserToken();
+  return await fetch(API_URL_VEHICULOS + "vehiculos/", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      //authHeader
+      "Authorization": 'Token '+ auth_token,
     },
     body: JSON.stringify({
       'placa': String(vehiculo.placa).trim(),
@@ -97,13 +104,31 @@ export const addVehiculo = async (vehiculo) => {
   });
 };
 
+export const deleteVehiculo = async (id_car,vehiculo) => {
+  const auth_token = getUserToken();
+  fetch(API_URL_VEHICULOS + "vehiculos/"+id_car+"/", {
+    method: 'DELETE',
+    headers: {
+      "Authorization": 'Token '+ auth_token,
+    },
+  }).then(response =>{
+    response.json().then(value=>{
+      if(response.error==="" && response.error===undefined){
+        eliminarImagen(vehiculo.foto,"vehiculos");
+      }
+      return value;
+    });
+  });
+};
+
 export const anexaVehiculoToUser = async (vehiculo) => {
+  const auth_token = getUserToken();
   return await getUser().then(user=>{
-    fetch(API_URL + "usuario_vehiculos/", {
+    fetch(API_URL_VEHICULOS + "usuario_vehiculos/", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        //authHeader
+        "Authorization": 'Token '+ auth_token,
       },
       body: JSON.stringify({
         'usuario': parseInt(user.id),
@@ -114,34 +139,76 @@ export const anexaVehiculoToUser = async (vehiculo) => {
 };
 
 export const getVehiculos = async (user) => {
-  return await fetch(API_URL + "vehiculos/getVehiculos/?usuario="+user.id);
+  return await fetch(API_URL_VEHICULOS + "vehiculos/getVehiculos/?usuario="+user.id);
 };
 
-export const findVehiculo = async (vehiculo) => {
-  return await fetch(API_URL + "vehiculos/" + vehiculo.id + '/');
+export const findVehiculo = async (id) => {
+  return await fetch(API_URL_VEHICULOS + "vehiculos/" + id + '/');
 };
 
 /*--------------------------------END------------------------------------*/
 
 /*--------------------------------INSTANCIA VEHICULOS------------------------------------*/
 
-export const deleteInstanceVehiculo = async (id_car)=>{
+export const deleteInstanceVehiculo = async (id_car,vehiculo)=>{
+  const auth_token = getUserToken();
   const response = await getListInstancesVehiculo(id_car);
-  console.log(response);
-  //const response = await getInstanceVehiculo(id_car);
-  /*return await fetch(API_URL+"usuario_vehiculos/"+response.instance.id+"/",{
-    method: "DELETE",
-    headers: {
-      //authHeader
-    },
-  });*/
+  if(response.instances.length>1){
+    const user =  await getUser();
+    let id_instance = 0;
+    response.instances.forEach(element => {
+      if((user.id===element.fields.usuario)&&(id_car===element.fields.vehiculo)){
+        id_instance = element.pk;
+      }
+    });
+    return await fetch(API_URL_VEHICULOS+"usuario_vehiculos/"+id_instance+"/",{
+      method: "DELETE",
+      headers: {
+        "Authorization": 'Token '+ auth_token,
+      },
+    });
+  }else{
+    return await deleteVehiculo(id_car,vehiculo);
+  }  
 };
 
 const getInstanceVehiculo = async(id_car)=>{
   const user =  await getUser();
-  return await (await fetch(API_URL+"usuario_vehiculos/getInstance/?usuario="+user.id+"&vehiculo="+id_car)).json();
+  return await (await fetch(API_URL_VEHICULOS+"usuario_vehiculos/getInstance/?usuario="+user.id+"&vehiculo="+id_car)).json();
 };
 
 const getListInstancesVehiculo = async(id_car)=>{
-  return await (await fetch(API_URL+"usuario_vehiculos/getListInstances/?vehiculo="+id_car)).json();
+  return await (await fetch(API_URL_VEHICULOS+"usuario_vehiculos/getListInstances/?vehiculo="+id_car)).json();
+};
+
+/*--------------------------------END------------------------------------*/
+
+export const getTalleres = async () => {
+  return await fetch(API_URL_TALLERES+"talleres/");
+};
+
+export const deleteTaller = async (id_taller) => {
+  return await fetch(API_URL_TALLERES+"talleres/"+id_taller+"/",{
+    method: "DELETE",
+  });
+};
+
+export const addTaller = async (taller) => {
+  const auth_token = getUserToken();
+  return await fetch(API_URL_TALLERES + "talleres/", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'nombre': String(taller.nombre).trim(),
+      'latitud': String(taller.latitud).trim(),
+      'longitud': String(taller.longitud).trim(),
+      'direccion': String(taller.direccion).trim(),
+      'telefono': String(taller.telefono).trim(),
+      'paginaWeb': String(taller.paginaWeb).trim(),
+      'email': String(taller.email).trim(),
+    }),
+  });
 };

@@ -145,6 +145,7 @@ function RegistroUsuario() {
                           value={user.numeroDocumento}
                           onChange={handleInputChange}
                           required
+                          maxLength="15"
                         />
                       </div>
                       <div className="form-group">
@@ -158,6 +159,7 @@ function RegistroUsuario() {
                           value={user.ciudad}
                           onChange={handleInputChange}
                           required
+                          maxLength="100"
                         />
                       </div>
                       <div className="form-group">

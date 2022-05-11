@@ -12,15 +12,15 @@ import { Settings } from "@mui/icons-material";
 
 export default function MenuList() {
      const [user, setUser] = React.useState([]);
-     const [admin,setAdmin] = React.useState(false);
+     const [admin, setAdmin] = React.useState(false);
 
      const navigate = useNavigate();
 
      React.useEffect(() => {
-          const getUsuario = async()=>{
-               const usuario = await authService.getUser(); 
+          const getUsuario = async () => {
+               const usuario = await authService.getUser();
                setUser(usuario);
-               if(usuario.roles[0]===1||usuario.roles[1]===1){
+               if (usuario.roles[0] === 1 || usuario.roles[1] === 1) {
                     setAdmin(true);
                }
           }
@@ -29,19 +29,25 @@ export default function MenuList() {
 
      return (
           <React.Fragment>
-               <ListItemButton onClick={()=>{navigate('/home')}}>
+               <ListItemButton onClick={() => { navigate('/home') }}>
                     <ListItemIcon>
                          <Home />
                     </ListItemIcon>
                     <ListItemText primary="Inicio" />
                </ListItemButton>
 
-               <ListItemButton>
-                    <ListItemIcon>
-                         <RepairIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Talleres" />
-               </ListItemButton>
+               {
+                    admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/talleres') }}>
+                              <ListItemIcon>
+                                   <RepairIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Talleres" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
 
                <ListItemButton>
                     <ListItemIcon>
@@ -59,16 +65,16 @@ export default function MenuList() {
 
                {
                     admin
-                    ?
-                         <ListItemButton>
+                         ?
+                         <ListItemButton onClick={() => { navigate('/usuarios') }}>
                               <ListItemIcon>
                                    <PeopleIcon />
                               </ListItemIcon>
                               <ListItemText primary="Usuarios" />
                          </ListItemButton>
-                    :
+                         :
                          <div hidden></div>
-               }               
+               }
           </React.Fragment>
      );
 }

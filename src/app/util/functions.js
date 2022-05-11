@@ -1,39 +1,39 @@
 //Alertas Bonitas
 import Swal from "sweetalert2";
 
-import {cargarImagen} from "./firebase";
-
-export async function alert_detail_vehiculo(vehiculo){
+/*export async function alert_detail_vehiculo(vehiculo) {
      let html = printVehiculo(vehiculo);
+     let width = 200;
+     if(window.innerWidth<600){
+          width = 250;
+     }
      Swal.fire({
-          title: 'Vehiculo',
-          text: "Hola\n"+"Mundo",
-          imageUrl: vehiculo.foto,
-          imageHeight: 200,
-          imageAlt: 'Vehiculo Img',
+          html: html,
+          width: width,
+          heightAuto: true,
      })
-};
+};*/
 
-function printVehiculo(vehiculo){
-     let html = 
-          "Marca: "+vehiculo.marca +"\
-          "+"\nModelo: "+vehiculo.modelo+"\
-          "+"\nLinea: "+vehiculo.linea+"\
-          "+"\nColor: "+vehiculo.color+"\
-          "+"\nPlaca: "+vehiculo.placa+"\
-          "+"\nTipo Combustible: "+vehiculo.tipoCombustible+"\
-          "+"\nNúmero Serie: "+vehiculo.numeroSerie+"\
-          "+"\nNúmero Motor: "+vehiculo.numeroMotor+"\
-          "+"\nKilometraje Actual: "+vehiculo.kilometrajeActual+"\
-          "+"\nKilometraje Último Mantenimiento: "+vehiculo.kilometrajeUltimoMantenimiento+"\
-          "+"\nNombre Conductor: "+vehiculo.nombreConductor+"\
-          "+"\nFecha Soat: "+vehiculo.fechaSoat+"\
-          "+"\nFecha Técnico Mécanica: "+vehiculo.fechaTecnicoMecanica+"\
-          "+"\nFecha Matricula: "+vehiculo.fechaMatricula+"\
-          "+"\nFecha Registro: "+vehiculo.fechaRegistro+"";
-     console.log(html);
+/*function printVehiculo(vehiculo) {
+     let html ="<div style='display:grid; grid-gap: 1rem; grid-template-columns: repeat(2, 1fr);'>"+
+          "<span><b>Marca: </b>" + vehiculo.marca + "</span>\
+          "+ "<span><b>Modelo: </b>" + vehiculo.modelo + "</span>\
+          "+ "<span><b>Linea: </b>" + vehiculo.linea + "</span>\
+          "+ "<span><b>Color: </b>" + vehiculo.color + "</span>\
+          "+ "<span><b>Placa: </b>" + vehiculo.placa + "</span>\
+          "+ "<span><b>Tipo Combustible: </b>" + vehiculo.tipoCombustible + "</span>\
+          "+ "<span><b>Número Serie: </b>" + vehiculo.numeroSerie + "</span>\
+          "+ "<span><b>Número Motor: </b>" + vehiculo.numeroMotor + "</span>\
+          "+ "<span><b>Número Chasís: </b>" + vehiculo.numeroChasis + "</span>\
+          "+ "<span><b>Kilometraje Actual: </b>" + vehiculo.kilometrajeActual + "</span>\
+          "+ "<span><b>Kilometraje Último Mantenimiento: </b>" + vehiculo.kilometrajeUltimoMantenimiento + "</span>\
+          "+ "<span><b>Nombre Conductor: </b>" + vehiculo.nombreConductor + "</span>\
+          "+ "<span><b>Fecha Soat: </b>" + vehiculo.fechaSoat + "</span>\
+          "+ "<span><b>Fecha Técnico Mécanica: </b>" + vehiculo.fechaTecnicoMecanica + "</span>\
+          "+ "<span><b>Fecha Matricula: </b>" + vehiculo.fechaMatricula + "</span>\
+          "+ "<span><b>Fecha Registro: </b>" + vehiculo.fechaRegistro + "</div>";
      return html;
-}
+}*/
 
 export function alert_login(success, message) {
      Swal.fire({
@@ -45,15 +45,36 @@ export function alert_login(success, message) {
      });
 };
 
-export function alert_success(success, message){
+export function alert_success(success, message) {
      Swal.fire({
           title: success,
           text: message,
-          icon:'success',
+          icon: 'success',
           showConfirmButton: false,
           timer: 1500
      });
 };
+
+export function alert_confirm(success,message) {
+     Swal.fire({
+          title: 'Está seguro?',
+          text: "No se puede revertir!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar'
+     }).then((result) => {
+          if (result.isConfirmed) {
+               Swal.fire(
+                    success,
+                    message,
+                    'success'
+               )
+          }
+     })
+}
 
 export function alert_logout() {
      let timerInterval
@@ -104,21 +125,6 @@ export function verificarCamposRegister() {
           }
      }
 };
-
-/*export async function agregar_vehiculo(){
-     let index = 0;
-     document.querySelectorAll('input').forEach( input => {
-          if (index!==12) {
-               console.log(index+": "+input.value);
-               if(input.value===""){
-                    alert_error("Oops...!", "Los campos no pueden estar vacios.");
-                    return;
-               }
-          }
-          index++;
-     });
-     cargarImagen("vehiculos");
-};*/
 
 function verificarContraseña() {
      let password = document.getElementById('password').value;

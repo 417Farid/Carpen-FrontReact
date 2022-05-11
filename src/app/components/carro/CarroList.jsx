@@ -27,19 +27,18 @@ function CarroList() {
 
     const handleBuscar = ()=>{
         let placa = String(document.getElementById("buscarVehiculo").value).trim().toUpperCase();
-        let cars;
         vehiculos.forEach(vehiculo => {
             if(vehiculo.fields.placa===placa){
-                console.log(vehiculo.fields.placa+":----")
-                
-                setVehiculos([vehiculo]);
+                navigate("/home/detalle_vehiculo/"+vehiculo.pk);
             }     
         });
         return null;
     }
 
     useEffect(()=>{
-        listVehiculos();
+        if(vehiculos.length===0){
+            listVehiculos();
+        }
     },[]);
     
     return (
@@ -55,7 +54,7 @@ function CarroList() {
                                 <div className="container-fluid">
                                 <button type='button' onClick={()=>{navigate('/home/agregar_vehiculo')}} className='btn btn-primary m-2'>Agregar Vehiculo</button>
                                     <form className="d-flex">
-                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo" aria-label="Search"/>
+                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo Placa" aria-label="Search" maxLength="10"/>
                                         <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
                                     </form>
                                 </div>
@@ -64,7 +63,7 @@ function CarroList() {
                     }
                 })()
             }
-            <hr/>
+            <hr />
             {
                 (()=>{
                     if(vehiculos.length===0){

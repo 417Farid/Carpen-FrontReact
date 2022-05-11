@@ -78,11 +78,6 @@ export function logout_firebase() {
 }
 
 export async function eliminarImagen(url,carpeta) {
-    /*let inputFile = document.getElementById("formFile");
-    let file = inputFile.files[0];
-    const fileName = file.name.toString();
-    let path = modificarName(fileName);
-    let imagenRef = carpeta + "/" + path;*/
     let imagenRef = carpeta+"/"+obtenerNombreImg(url);
     const storage = getStorage();
 
@@ -98,27 +93,19 @@ export async function eliminarImagen(url,carpeta) {
 }
 
 function obtenerNombreImg(url) {
-    let valida = false;
-    let cadena = "";
-    let char;
-    if (url.length > 100) {
-        for (let i = 87; valida === false; i++) {
-            char = url.toString().charAt(i);
-            if (char === "?")
-                valida = true;
-            else
-                cadena += char;
-
-        }
-    }
-    return cadena;
+    let array = url.split("%2F");
+    array = array[1].split("?");
+    return array[0];
 }
 
 function modificarName(fileName) {
     let marca = document.getElementById("marca").value;
-    let modelo = document.getElementById("modelo").value
-    let placa = document.getElementById("placa").value;
-    return hashCode(placa) + "-" + marca + "-" + modelo + getExtension(fileName);
+    let placa = document.getElementById("placa1").value +"-"+document.getElementById("placa2").value;
+    let valor1 = "";
+    marca.split(" ").forEach(element=>{
+        valor1 += element;
+    })
+    return hashCode(placa.toUpperCase()) + "-" + valor1 + getExtension(fileName);
 }
 
 function getExtension(fileName) {

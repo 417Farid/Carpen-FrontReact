@@ -20,7 +20,7 @@ import MenuList from "./MenuHome";
 import * as authService from "../../auth/auth.service";
 import { useNavigate } from "react-router-dom";
 import { alert_logout } from "../../util/functions";
-import {logout_firebase} from "../../util/firebase"
+import { logout_firebase } from "../../util/firebase";
 
 function Copyright(props) {
   return (
@@ -88,9 +88,8 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardContent({contenedor}) {
+function DashboardContent({ contenedor }) {
   const [open, setOpen] = React.useState(true);
-
   const navigate = useNavigate();
 
   const toggleDrawer = () => {
@@ -161,7 +160,7 @@ function DashboardContent({contenedor}) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MenuList/>
+            <MenuList />
           </List>
         </Drawer>
         <Box
@@ -187,6 +186,6 @@ function DashboardContent({contenedor}) {
   );
 }
 
-export default function Dashboard({contenedor}) {
-  return <DashboardContent contenedor={contenedor}/>;
+export default function Dashboard({ contenedor }) {
+  return <DashboardContent contenedor={contenedor} />;
 }
