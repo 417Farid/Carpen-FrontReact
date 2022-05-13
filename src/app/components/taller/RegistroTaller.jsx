@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ResponsiveContainer } from 'recharts';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
-import {alert_error, alert_success} from '../../util/functions';
+import { alert_error, alert_success } from '../../util/functions';
 
 function RegistroTaller() {
+  const { id } = useParams();
+
   const valores_iniciales = {
     nombre: "",
     latitud: "",
@@ -22,20 +24,28 @@ function RegistroTaller() {
   async function handleSubmit(e) {
     e.preventDefault();
     const taller = upperCase();
-    console.log(taller);
     try {
+      if (id) {
+        const response = await authService.updateTaller(taller, id);
+        await response.json().then((value) => {
+          if (parseInt(response.status) === 200) {
+            alert_success("Exito!", "Taller actualizado correctamente.");
+            setTimeout(() => { navigate("/talleres") }, 1500);
+          } else {
+            alert_error("Error!", "No se pudo actualizar el taller.");
+          }
+        });
+      } else {
         const response = await authService.addTaller(taller);
         await response.json().then((value) => {
           if (parseInt(response.status) === 200) {
-            authService.anexaVehiculoToUser(value.vehiculo).then(() => {
-              alert_success("Exito!", "Taller agregado correctamente.");
-              setTimeout(()=>{navigate("/talleres");},1500)
-            });
+            alert_success("Exito!", "Taller agregado correctamente.");
+            setTimeout(() => { navigate("/talleres") }, 1500);
           } else {
             alert_error("Error!", "No se pudo agregar el taller.");
           }
         });
-
+      }
     } catch (error) {
       console.log(error);
     }
@@ -78,6 +88,21 @@ function RegistroTaller() {
   const handleInputChange = (e) => {
     setTaller({ ...taller, [e.target.name]: e.target.value });
   }
+
+  useEffect(() => {
+    if (id) {
+      authService.findTaller(id).then(response => {
+        response.json().then(value => {
+          if (parseInt(response.status) === 200) {
+            setTaller(value);
+          } else {
+            alert_error("Error!", "No se encontró ningun taller con esos datos.");
+            setTimeout(() => { navigate("/talleres") }, 2000);
+          }
+        });
+      })
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -184,11 +209,10 @@ function RegistroTaller() {
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <button
-                  id=""
-                  className="btn btn-primary btn-block my-2"
-                >
-                  Registrar
+                <button type="submit" className="btn btn-primary btn-block my-2">
+                  {
+                    id ? "Actualizar" : "Registrar"
+                  }
                 </button>
                 <button type="button" className="btn btn-secondary btn-block my-2 mx-2" onClick={() => navigate(-1)}>Regresar</button>
               </div>

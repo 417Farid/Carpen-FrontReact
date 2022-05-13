@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
 import { alert_error } from "../../util/functions";
+import { initMap } from "../../util/google-maps";
 
 const Taller = ({ taller }) => {
 
@@ -15,12 +16,8 @@ const Taller = ({ taller }) => {
                     Información del Taller
                </Typography>
                <hr />
-               <div className="row row-cols-sm-2 row-cols-1 mx-auto">
-                    <div className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-xs-12 col-sm-6">
-                         <div id="map" className="figure-img img-fluid rounded"/>
-                         <figcaption className="figure-caption text-end">{taller.nombre + ' - Longitud: ' + taller.longitud +" / Latitud: "+taller.latitud}</figcaption>
-                    </div>
-                    <div className="card shadow bg-body mt-2 rounded col-xs-12 col-sm-6">
+               <div className="mx-auto">
+                    <div className="card shadow bg-body mt-2 rounded col-12">
                          <div className="card-body">
                               <h5 className="card-title text-center mb-2">Información Básica</h5>
                               <div className="p-3 rounded shadow">
@@ -29,11 +26,18 @@ const Taller = ({ taller }) => {
                                    <div className="mb-1"><b>Telefono: </b>{taller.telefono}</div>
                                    <div className="mb-1"><b>Email: </b>{taller.email}</div>
                                    <div className="mb-1"><b>Latitud: </b>{taller.latitud}</div>
-                                   <div className="mb-1"><b>Longitud: </b>{taller.Longitud}</div>
+                                   <div className="mb-1"><b>Longitud: </b>{taller.longitud}</div>
                               </div>
                          </div>
                     </div>
+                    <div className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-12">
+                         <div id="google_map" className="figure-img img-fluid rounded"/>
+                         <figcaption className="figure-caption text-end">{taller.nombre + ' - Longitud: ' + taller.longitud +" / Latitud: "+taller.latitud}</figcaption>
+                    </div>
                </div>
+               {
+                    //initMap()
+               }
           </div>
      );
 }

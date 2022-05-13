@@ -16,7 +16,9 @@
     "sweetalert2": "^11.4.8",
     "@firebase/app": "^0.7.22",
     "@firebase/auth": "^0.19.12",
-    "@firebase/storage": "^0.9.5"
+    "@firebase/storage": "^0.9.5",
+    "@googlemaps/js-api-loader": "1.14.2",
+    "@googlemaps/map-loader": "0.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

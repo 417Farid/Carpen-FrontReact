@@ -156,3 +156,7 @@ function verificarContraseña() {
           return false;
      }
 }
+
+export function generateClick(name){
+     document.getElementById(name).click();
+}

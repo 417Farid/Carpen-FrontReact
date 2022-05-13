@@ -8,7 +8,6 @@ import RepairIcon from "@mui/icons-material/CarRepair";
 import MapIcon from "@mui/icons-material/Map";
 import PeopleIcon from "@mui/icons-material/People";
 import * as authService from '../../auth/auth.service'
-import { Settings } from "@mui/icons-material";
 
 export default function MenuList() {
      const [user, setUser] = React.useState([]);
@@ -48,13 +47,6 @@ export default function MenuList() {
                          :
                          <div hidden></div>
                }
-
-               <ListItemButton>
-                    <ListItemIcon>
-                         <Settings />
-                    </ListItemIcon>
-                    <ListItemText primary="Mantenimientos" />
-               </ListItemButton>
 
                <ListItemButton>
                     <ListItemIcon>

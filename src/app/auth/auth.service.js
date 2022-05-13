@@ -2,6 +2,8 @@ import { eliminarImagen } from "../util/firebase";
 
 const API_URL_VEHICULOS = "http://127.0.0.1:8099/";
 const API_URL_TALLERES = "http://127.0.0.1:8080/";
+const API_URL_PROGRAMA_MANTENIMIENTO = "http://127.0.0.1:8070/";
+const API_URL_MANTENIMIENTOS = "http://127.0.0.1:8070/";
 
 //const API_AUTH_TOKEN = "http://127.0.0.1:8099/api-generate-token/"
 
@@ -104,21 +106,50 @@ export const addVehiculo = async (vehiculo) => {
   });
 };
 
+export const updateVehiculo = async (vehiculo, id) => {
+  const auth_token = getUserToken();
+  return await fetch(API_URL_VEHICULOS + "vehiculos/"+id+"/", {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'placa': String(vehiculo.placa).trim(),
+      'marca': String(vehiculo.marca).trim(),
+      'modelo': String(vehiculo.modelo).trim(),
+      'linea': String(vehiculo.linea).trim(),
+      'color': String(vehiculo.color).trim(),
+      'numeroSerie': String(vehiculo.numeroSerie).trim(),
+      'numeroChasis': String(vehiculo.numeroChasis).trim(),
+      'numeroMotor': String(vehiculo.numeroMotor).trim(),
+      'tipoCombustible': String(vehiculo.tipoCombustible).trim(),
+      'kilometrajeActual': parseInt(vehiculo.kilometrajeActual),
+      'kilometrajeUltimoMantenimiento': parseInt(vehiculo.kilometrajeUltimoMantenimiento),
+      'nombreConductor': String(vehiculo.nombreConductor).trim(),
+      'foto': String(vehiculo.foto),
+      'fechaSoat': String(vehiculo.fechaSoat).trim(),
+      'fechaTecnicoMecanica': String(vehiculo.fechaTecnicoMecanica).trim(),
+      'fechaMatricula': String(vehiculo.fechaMatricula).trim(),
+    }),
+  });
+};
+
 export const deleteVehiculo = async (id_car,vehiculo) => {
   const auth_token = getUserToken();
-  fetch(API_URL_VEHICULOS + "vehiculos/"+id_car+"/", {
+  const response = await fetch(API_URL_VEHICULOS + "vehiculos/"+id_car+"/", {
     method: 'DELETE',
     headers: {
       "Authorization": 'Token '+ auth_token,
     },
-  }).then(response =>{
-    response.json().then(value=>{
-      if(response.error==="" && response.error===undefined){
-        eliminarImagen(vehiculo.foto,"vehiculos");
-      }
-      return value;
-    });
   });
+  const valor = response.clone();
+  response.json().then(value=>{
+    if(value.error===""){
+      eliminarImagen(vehiculo.foto,"vehiculos");
+    }
+  });
+  return valor;
 };
 
 export const anexaVehiculoToUser = async (vehiculo) => {
@@ -183,6 +214,9 @@ const getListInstancesVehiculo = async(id_car)=>{
 
 /*--------------------------------END------------------------------------*/
 
+/*--------------------------------TALLERES------------------------------------*/
+
+
 export const getTalleres = async () => {
   return await fetch(API_URL_TALLERES+"talleres/");
 };
@@ -194,12 +228,12 @@ export const deleteTaller = async (id_taller) => {
 };
 
 export const addTaller = async (taller) => {
-  const auth_token = getUserToken();
+  //const auth_token = getUserToken();
   return await fetch(API_URL_TALLERES + "talleres/", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      "Authorization": 'Token '+ auth_token,
+      //"Authorization": 'Token '+ auth_token,
     },
     body: JSON.stringify({
       'nombre': String(taller.nombre).trim(),
@@ -212,3 +246,57 @@ export const addTaller = async (taller) => {
     }),
   });
 };
+
+export const updateTaller = async (taller,id_taller) => {
+  //const auth_token = getUserToken();
+  return await fetch(API_URL_TALLERES + "talleres/"+id_taller+"/", {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'nombre': String(taller.nombre).trim(),
+      'latitud': String(taller.latitud).trim(),
+      'longitud': String(taller.longitud).trim(),
+      'direccion': String(taller.direccion).trim(),
+      'telefono': String(taller.telefono).trim(),
+      'paginaWeb': String(taller.paginaWeb).trim(),
+      'email': String(taller.email).trim(),
+    }),
+  });
+};
+
+export const findTaller = async(id_taller)=>{
+  return await fetch(API_URL_TALLERES+"talleres/"+id_taller+"/");
+}
+
+/*--------------------------------END------------------------------------*/
+
+/*--------------------------------MARCAS Y LINEAS------------------------------------*/
+
+export const getMarcas = async ()=>{
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO+"marcas-vehiculo/")).json();
+}
+
+export const findMarca = async (id_marca)=>{
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO+"marcas-vehiculo/"+id_marca+"/")).json();
+}
+
+export const getLineas = async ()=>{
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO+"lineas-vehiculo/")).json();
+}
+
+export const findLinea = async (id_linea)=>{
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO+"lineas-vehiculo/"+id_linea+"/")).json();
+}
+
+/*--------------------------------END------------------------------------*/
+
+/*--------------------------------MANTENIMIENTOS------------------------------------*/
+
+export const deleteMantenimiento = async (id_mantenimiento) =>{
+  return await fetch(API_URL_MANTENIMIENTOS+"mantenimientos/"+id_mantenimiento+"/",{
+    method: 'DELETE'
+  });
+}

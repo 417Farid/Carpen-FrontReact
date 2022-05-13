@@ -6,7 +6,7 @@ import * as authService from '../../auth/auth.service';
 
 const UserItem = ({usuario,count}) => {
      return (
-          <tr key={usuario.id}>
+          <tr key={usuario.id} className='text-center'>
                <td>{count}</td>
                <td>{usuario.first_name + " " + usuario.last_name}</td>
                <td>{usuario.tipoDocumento + " - " + usuario.numeroDocumento}</td>
@@ -68,8 +68,8 @@ function ListaUsuarios() {
      return (
           <table id="example" className="table table-striped table-bordered shadow">
                <thead>
-                    <tr>
-                         <th>ID</th>
+                    <tr className='text-center'>
+                         <th>#</th>
                          <th>Nombre</th>
                          <th>Documento</th>
                          <th>Correo</th>
@@ -79,10 +79,9 @@ function ListaUsuarios() {
                </thead>
                <tbody>
                     {(() => {
-                         let count = 0
                          return (
-                              usuarios.map((usuario) => (
-                                   <UserItem key={usuario.id} usuario={usuario} count={count+1}/>
+                              usuarios.map((usuario,index) => (
+                                   <UserItem key={usuario.id} usuario={usuario} count={index+1}/>
                               ))
                          )
                     })()}

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ResponsiveContainer } from 'recharts';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 import DeleteForever from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';import AssignmentTurnedIn from '@mui/icons-material/AssignmentTurnedIn';
+import EditIcon from '@mui/icons-material/Edit';
+import AssignmentTurnedIn from '@mui/icons-material/AssignmentTurnedIn';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import IconButton from '@mui/material/IconButton';
@@ -29,16 +32,16 @@ const Taller = ({ taller, listTalleres,count}) => {
   }
 
   return (
-    <tr key={taller.id}>
+    <tr key={taller.id} className="text-center">
       <th scope="row">{count}</th>
       <td>{taller.nombre}</td>
       <td>{taller.direccion}</td>
       <td>{taller.telefono}</td>
       <td>{taller.email}</td>
-      <td>
-        <IconButton onClick={()=>{navigate("/talleres/editar_taller")}} title='Editar Taller' style={{ color: "blue" }}><EditIcon /></IconButton>
-        <IconButton onClick={()=>{navigate("/talleres/ver_taller")}} title='Ver Taller' style={{ color: "grey" }}><PageviewIcon /></IconButton>
-        <IconButton title='Añadir Mantenimiento' style={{ color: "green" }}><AssignmentTurnedIn /></IconButton>
+      <td className='row-cols-2 row-cols-md-auto'>
+        <IconButton onClick={()=>{navigate("/talleres/editar_taller/"+taller.id)}} title='Editar Taller' style={{ color: "blue" }}><EditIcon /></IconButton>
+        <IconButton onClick={()=>{navigate("/talleres/ver_taller/"+taller.id)}} title='Ver Taller' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+        <IconButton title='Añadir Operación Mantenimiento' style={{ color: "green" }}><AssignmentTurnedIn /></IconButton>
         <IconButton title='Añadir Repuesto' style={{ color: "orange" }}><HandymanIcon /></IconButton>
         <IconButton onClick={()=>{deleteTaller()}} title='Borrar Taller' style={{ color: "red" }}><DeleteForever /></IconButton>
       </td>
@@ -55,7 +58,7 @@ function TallerList() {
       const response = await authService.getTalleres();
       response.json().then(value=>{
         if(parseInt(response.status)===200){
-          setTalleres(value);
+          setTalleres(value.rows);
         }
       });
     } catch (error) {
@@ -70,13 +73,13 @@ function TallerList() {
   }, [])
 
   const handleBuscar = () => {
-    /*let nombre = document.getElementById("buscarTaller").value;
+    let nombre = document.getElementById("buscarTaller").value;
     talleres.forEach(taller => {
-        if(taller.fields.nombre===nombre){
-            navigate("/home/detalle_taller/"+taller.id);
+        if(taller.nombre===nombre){
+            navigate("/talleres/ver_taller/"+taller.id);
         }     
     });
-    return null;*/
+    return null;
   }
 
   return (
@@ -114,7 +117,7 @@ function TallerList() {
                     <div className="table-responsive">
                       <table className="table table-striped table-bordered shadow">
                         <thead>
-                          <tr>
+                          <tr className='text-center'>
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Direccion</th>
@@ -125,10 +128,9 @@ function TallerList() {
                         </thead>
                         <tbody>
                           {(() => {
-                            let count = 0
                             return (
-                              talleres.map((taller) => (       
-                                <Taller key={taller.id} taller={taller} listTalleres={listTalleres} count={count+1}/>
+                              talleres.map((taller,index) => (       
+                                <Taller key={taller.id} taller={taller} listTalleres={listTalleres} count={index+1}/>
                               ))
                             )
                           })()}
