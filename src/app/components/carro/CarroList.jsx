@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Grid from '@mui/material/Grid';
@@ -14,7 +14,7 @@ function CarroList() {
     const [vehiculos, setVehiculos] = useState([]);
     const navigate = useNavigate();
 
-    const listVehiculos = async () =>{
+    const listVehiculos = async () => {
         try {
             const user = await authService.getUser();
             const res = await authService.getVehiculos(user);
@@ -25,7 +25,12 @@ function CarroList() {
         }
     };
 
-    const handleBuscar = ()=>{
+    /*const [busqueda, setBusqueda] = useState({
+        value: "",
+        vehiculos: [],
+    });*/
+
+    const handleBuscar = ()=> {
         let placa = String(document.getElementById("buscarVehiculo").value).trim().toUpperCase();
         vehiculos.forEach(vehiculo => {
             if(vehiculo.fields.placa===placa){
@@ -33,29 +38,43 @@ function CarroList() {
             }     
         });
         return null;
+        /*e.persist();
+        setBusqueda({ ...busqueda, [e.target.name]: [e.target.value] })
+        filtrarVehiculos();*/
     }
 
-    useEffect(()=>{
-        if(vehiculos.length===0){
+    /*const filtrarVehiculos = () => {
+        var search = vehiculos.filter(item => {
+            if (item.fields.placa.toString().includes(busqueda.value) ||
+                item.fields.marca.toString().includes(busqueda.value) ||
+                item.fields.modelo.toString().includes(busqueda.modelo)) {
+                return item;
+            }
+        });
+        setBusqueda({ vehiculos: search });
+    }*/
+
+    useEffect(() => {
+        if (vehiculos.length === 0) {
             listVehiculos();
         }
-    },[]);
-    
+    }, []);
+
     return (
         <div>
             <Typography component="h2" variant="h5" color="dark" gutterBottom>
                 Mis Vehiculos
             </Typography>
             {
-                (()=>{
-                    if(vehiculos.length!==0){
+                (() => {
+                    if (vehiculos.length !== 0) {
                         return (
                             <nav className="navbar navbar-light bg-light">
                                 <div className="container-fluid">
-                                <button type='button' onClick={()=>{navigate('/home/agregar_vehiculo')}} className='btn btn-primary m-2'>Agregar Vehiculo</button>
+                                    <button type='button' onClick={() => { navigate('/home/agregar_vehiculo') }} className='btn btn-primary m-2'>Agregar Vehiculo</button>
                                     <form className="d-flex">
-                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo Placa" aria-label="Search" maxLength="10"/>
-                                        <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo Placa" aria-label="Search" maxLength="10" />
+                                        <button className="btn btn-success" onClick={()=>{handleBuscar()}} type="button">Search</button>
                                     </form>
                                 </div>
                             </nav>
@@ -65,15 +84,15 @@ function CarroList() {
             }
             <hr />
             {
-                (()=>{
-                    if(vehiculos.length===0){
-                        return (<NoCar/>);
-                    }else{
+                (() => {
+                    if (vehiculos.length === 0) {
+                        return (<NoCar />);
+                    } else {
                         return (
-                            <Grid container spacing={{ xs: 1, sm: 2 ,md: 4 }} columns={{ xs: 1, sm: 2, md: 3}}>
+                            <Grid container spacing={{ xs: 1, sm: 2, md: 4 }} columns={{ xs: 1, sm: 2, md: 3 }}>
                                 {vehiculos.map((vehiculo) => (
                                     <Grid key={vehiculo.pk} item xs={1}>
-                                        <Card key={vehiculo.pk} vehiculo={vehiculo.fields} id_car={vehiculo.pk} list_vehiculos={listVehiculos}/>
+                                        <Card key={vehiculo.pk} vehiculo={vehiculo.fields} id_car={vehiculo.pk} list_vehiculos={listVehiculos} />
                                     </Grid>
                                 ))}
                             </Grid>

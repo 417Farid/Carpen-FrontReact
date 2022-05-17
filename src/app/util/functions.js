@@ -55,7 +55,7 @@ export function alert_success(success, message) {
      });
 };
 
-export function alert_confirm(success,message) {
+export function alert_confirm(success, message) {
      Swal.fire({
           title: 'Está seguro?',
           text: "No se puede revertir!",
@@ -157,6 +157,27 @@ function verificarContraseña() {
      }
 }
 
-export function generateClick(name){
+export function firstCharUpper(cadena) {
+     let array = cadena.split(" ");
+     let word = "";
+     cadena = "";
+     for (let i = 0; i < array.length; i++) {
+          for (let j = 0; j < array[i].length; j++) {
+               if (j === 0) {
+                    word += array[i].charAt(j).toUpperCase();
+               } else {
+                    word += array[i].charAt(j);
+               }
+          }
+          cadena += word;
+          word = "";
+          if ((i + 1) < array.length) {
+               cadena += " ";
+          }
+     }
+     return cadena;
+}
+
+export function generateClick(name) {
      document.getElementById(name).click();
 }

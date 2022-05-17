@@ -3,7 +3,7 @@ import { ResponsiveContainer } from 'recharts';
 import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
-import { alert_error, alert_success } from '../../util/functions';
+import { alert_error, alert_success, firstCharUpper } from '../../util/functions';
 
 function RegistroTaller() {
   const { id } = useParams();
@@ -27,24 +27,20 @@ function RegistroTaller() {
     try {
       if (id) {
         const response = await authService.updateTaller(taller, id);
-        await response.json().then((value) => {
-          if (parseInt(response.status) === 200) {
-            alert_success("Exito!", "Taller actualizado correctamente.");
-            setTimeout(() => { navigate("/talleres") }, 1500);
-          } else {
-            alert_error("Error!", "No se pudo actualizar el taller.");
-          }
-        });
+        if (parseInt(response.status) === 200) {
+          alert_success("Exito!", "Taller actualizado correctamente.");
+          setTimeout(() => { navigate("/talleres") }, 1500);
+        } else {
+          alert_error("Error!", "No se pudo actualizar el taller.");
+        }
       } else {
         const response = await authService.addTaller(taller);
-        await response.json().then((value) => {
-          if (parseInt(response.status) === 200) {
-            alert_success("Exito!", "Taller agregado correctamente.");
-            setTimeout(() => { navigate("/talleres") }, 1500);
-          } else {
-            alert_error("Error!", "No se pudo agregar el taller.");
-          }
-        });
+        if (parseInt(response.status) === 200) {
+          alert_success("Exito!", "Taller agregado correctamente.");
+          setTimeout(() => { navigate("/talleres") }, 1500);
+        } else {
+          alert_error("Error!", "No se pudo agregar el taller.");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -62,27 +58,6 @@ function RegistroTaller() {
       email: taller.email.toUpperCase(),
     }
     return valores_iniciales;
-  }
-
-  function firstCharUpper(cadena) {
-    let array = cadena.split(" ");
-    let word = "";
-    cadena = "";
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < array[i].length; j++) {
-        if (j === 0) {
-          word += array[i].charAt(j).toUpperCase();
-        } else {
-          word += array[i].charAt(j);
-        }
-      }
-      cadena += word;
-      word = "";
-      if ((i + 1) < array.length) {
-        cadena += " ";
-      }
-    }
-    return cadena;
   }
 
   const handleInputChange = (e) => {

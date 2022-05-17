@@ -41,8 +41,8 @@ const Taller = ({ taller, listTalleres,count}) => {
       <td className='row-cols-2 row-cols-md-auto'>
         <IconButton onClick={()=>{navigate("/talleres/editar_taller/"+taller.id)}} title='Editar Taller' style={{ color: "blue" }}><EditIcon /></IconButton>
         <IconButton onClick={()=>{navigate("/talleres/ver_taller/"+taller.id)}} title='Ver Taller' style={{ color: "grey" }}><PageviewIcon /></IconButton>
-        <IconButton title='Añadir Operación Mantenimiento' style={{ color: "green" }}><AssignmentTurnedIn /></IconButton>
-        <IconButton title='Añadir Repuesto' style={{ color: "orange" }}><HandymanIcon /></IconButton>
+        <IconButton onClick={()=>{navigate("/talleres/operaciones/agregar_operacion/"+taller.id)}} title='Añadir Operación Mantenimiento' style={{ color: "green" }}><AssignmentTurnedIn /></IconButton>
+        <IconButton onClick={()=>{navigate("/talleres/repuestos/agregar_repuesto/"+taller.id)}} title='Añadir Repuesto' style={{ color: "orange" }}><HandymanIcon /></IconButton>
         <IconButton onClick={()=>{deleteTaller()}} title='Borrar Taller' style={{ color: "red" }}><DeleteForever /></IconButton>
       </td>
     </tr>
@@ -148,4 +148,4 @@ function TallerList() {
   );
 }
 
-export default TallerList
+export default TallerList;

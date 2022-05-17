@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import Typography from '@mui/material/Typography';
 import * as authService from "../../auth/auth.service";
-import {alert_success,alert_error} from '../../util/functions';
+import { alert_success, alert_error } from '../../util/functions';
 import NoMantenimiento from './NoMantenimiento';
 
 const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
@@ -30,7 +30,7 @@ const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
     }
 
     return (
-        <tr key={mantenimiento.id} className="text-center">
+        /*<tr key={mantenimiento.id} className="text-center">
             <th scope="row">{count}</th>
             <td>{mantenimiento.nombre}</td>
             <td>{mantenimiento.direccion}</td>
@@ -39,6 +39,18 @@ const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
             <td className='row-cols-2 row-cols-md-auto'>
                 <IconButton onClick={() => { navigate("/mantenimientos/editar_mantenimiento/" + mantenimiento.id) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
                 <IconButton onClick={() => { navigate("/mantenimientos/ver_mantenimiento/" + mantenimiento.id) }} title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+                <IconButton onClick={() => { deleteMantenimiento() }} title='Borrar Mantenimiento' style={{ color: "red" }}><DeleteForever /></IconButton>
+            </td>
+        </tr>*/
+        <tr className="text-center">
+            <th scope="row">1</th>
+            <td>2000</td>
+            <td>Cambio Aceite</td>
+            <td>30000</td>
+            <td>Cambio de Aceite</td>
+            <td className='row-cols-2 row-cols-md-auto'>
+                <IconButton onClick={() => { navigate("/mantenimientos/editar_mantenimiento/" + 1) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
                 <IconButton onClick={() => { deleteMantenimiento() }} title='Borrar Mantenimiento' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -69,13 +81,13 @@ function MantenimientoList() {
                     </Typography>
                     {
                         (() => {
-                            if (mantenimientos.length !== 0) {
+                            if (mantenimientos.length === 0) {
                                 return (
                                     <nav className="navbar navbar-light bg-light">
                                         <div className="container-fluid">
-                                            <button type='button' onClick={() => { navigate('/talleres/agregar_taller') }} className='btn btn-primary m-2'>Agregar Taller</button>
+                                            <button type='button' onClick={() => { navigate('/mantenimientos/agregar_mantenimiento') }} className='btn btn-primary m-2'>Agregar Mantenimiento</button>
                                             <form className="d-flex">
-                                                <input id='buscarTaller' className="form-control me-2" type="search" placeholder="Buscar Taller Nombre" aria-label="Search" />
+                                                <input id='buscarTaller' className="form-control me-2" type="search" placeholder="Buscar Mantenimiento Nombre" aria-label="Search" />
                                                 <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
                                             </form>
                                         </div>
@@ -88,30 +100,31 @@ function MantenimientoList() {
                     <div className="container-fluid">
                         {
                             (() => {
-                                if (mantenimientos.length === 0) {
+                                if (mantenimientos.length !== 0) {
                                     return (<NoMantenimiento />)
                                 } else {
                                     return (
                                         <div className="table-responsive">
                                             <table className="table table-striped table-bordered shadow">
                                                 <thead>
-                                                    <tr>
+                                                    <tr className='text-center'>
                                                         <th scope="col">#</th>
                                                         <th scope="col">Kilometraje</th>
                                                         <th scope="col">Nombre</th>
-                                                        <th scope="col">Repuesto</th>
                                                         <th scope="col">Precio del Mantenimiento</th>
                                                         <th scope="col">Operacion</th>
+                                                        <th scope="col">Opciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {(() => {
+                                                    <Mantenimiento/>
+                                                    {/*(() => {
                                                         return (
                                                             mantenimientos.map((mantenimiento, index) => (
                                                                 <Mantenimiento key={mantenimiento.id} mantenimiento={mantenimiento} listMantenimientos={listMantenimientos} count={index + 1} />
                                                             ))
                                                         )
-                                                    })()}
+                                                    })()*/}
                                                 </tbody>
                                             </table>
                                         </div>

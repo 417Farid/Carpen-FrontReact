@@ -6,7 +6,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 
 import * as authService from "../../auth/auth.service";
-import { alert_success, alert_error, generateClick } from "../../util/functions.js";
+import { alert_success, alert_error, generateClick, firstCharUpper } from "../../util/functions.js";
 import { cargarImagen, eliminarImagen } from "../../util/firebase";
 
 
@@ -149,7 +149,7 @@ function RegistroCarro() {
       marca: vehiculo.marca,
       modelo: vehiculo.modelo,
       linea: vehiculo.linea,
-      color: vehiculo.color,
+      color: vehiculo.color.toUpperCase(),
       numeroSerie: String(vehiculo.numeroSerie).toUpperCase(),
       numeroChasis: String(vehiculo.numeroChasis).toUpperCase(),
       numeroMotor: String(vehiculo.numeroMotor).toUpperCase(),
@@ -165,26 +165,7 @@ function RegistroCarro() {
     return valores_iniciales;
   };
 
-  function firstCharUpper(cadena) {
-    let array = cadena.split(" ");
-    let word = "";
-    cadena = "";
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < array[i].length; j++) {
-        if (j === 0) {
-          word += array[i].charAt(j).toUpperCase();
-        } else {
-          word += array[i].charAt(j);
-        }
-      }
-      cadena += word;
-      word = "";
-      if ((i + 1) < array.length) {
-        cadena += " ";
-      }
-    }
-    return cadena;
-  }
+
 
   return (
     <React.Fragment>
@@ -272,7 +253,7 @@ function RegistroCarro() {
                     <label>Color</label>
                     <input
                       id="color"
-                      type="color"
+                      type="text"
                       className="form-control"
                       placeholder="Color"
                       name="color"

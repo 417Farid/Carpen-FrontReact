@@ -1,82 +1,115 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { ResponsiveContainer } from 'recharts';
-
 import IconButton from '@mui/material/IconButton';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Typography from '@mui/material/Typography';
+import NoOperacion from './NoOperacion';
 
-function OperacionList() {
-    const [operacion, setOperacion] = useState([]);
+import * as authService from "../../auth/auth.service";
+
+const Operacion = ({ operacion, listOperaciones, count }) => {
     const navigate = useNavigate();
 
-    const listVehiculos = async () =>{
+    return (
+        <tr className='text-center' key={operacion.id}>
+            <th scope="col">{count}</th>
+            <td scope="col">{operacion.nombre}</td>
+            <td scope="col">{operacion.descripcion}</td>
+            <td scope='col'>
+                <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + operacion.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + operacion.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
+                <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
+            </td>
+        </tr>
+    );
+}
+
+function OperacionList() {
+    const [operaciones, setOperaciones] = useState([]);
+    const navigate = useNavigate();
+
+    const listOperaciones = async () => {
+        try {
+            const response = await authService.getOperaciones();
+            if (response.error === "") {
+                setOperaciones(response.rows);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const handleBuscar = ()=>{
+    const handleBuscar = () => {
     }
 
-    useEffect(()=>{
-    },[]);
+    useEffect(() => {
+        if (operaciones.length === 0) {
+            listOperaciones();
+        }
+    }, []);
 
     return (
         <React.Fragment>
             <ResponsiveContainer>
-                <div className="maincontainer">
+                <div className="container">
+                    <Typography component="h2" variant="h5" color="dark" gutterBottom>
+                        Operaciones Disponibles
+                    </Typography>
+                    {
+                        (() => {
+                            if (operaciones.length !== 0) {
+                                return (
+                                    <nav className="navbar navbar-light bg-light">
+                                        <div className="container-fluid">
+                                            <button type='button' onClick={() => { navigate('/operaciones/agregar_operacion') }} className='btn btn-primary m-2'>Agregar Operacion</button>
+                                            <form className="d-flex">
+                                                <input id='buscarOperacion' className="form-control me-2" type="search" placeholder="Buscar Operacion Nombre" aria-label="Search" />
+                                                <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                                            </form>
+                                        </div>
+                                    </nav>
+                                )
+                            }
+                        })()
+                    }
+                    <hr />
                     <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-lg-15 col-xl-15 mx-auto justify-content-center align-items-center text-center py-5">
-                                <Typography component="h3" variant="h3" color="dark" gutterBottom>
-                                    Operaciones Disponibles
-                                </Typography>
-                                <hr />
-                                <form>
-                                    <div className="form-group py-5">
-                                        <table class="table align-items-center ">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Nombre</th>
-                                                    <th scope="col">Descripcion</th>
-                                                    <th scope="col">Operacion</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Cambio de Llanta</td>
-                                                    <td>Llanta delantera sera cambiada 255/50</td>
-                                                    <IconButton title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                                                    <IconButton title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
-                                                    <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Cambio de Pomo Renault logan</td>
-                                                    <td>Sera cambiado por daños irreparables</td>
-                                                    <IconButton title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                                                    <IconButton title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
-                                                    <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Cambio de rejilla de aire acondicionado</td>
-                                                    <td>Sera cambiado por daños irreparables</td>
-                                                    <IconButton title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                                                    <IconButton title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
-                                                    <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
+                        {
+                            (() => {
+                                if (operaciones.length === 0) {
+                                    return (<NoOperacion />)
+                                } else {
+                                    return (
+                                        <div className="table-responsive">
+                                            <table className="table table-bordered shadow">
+                                                <thead>
+                                                    <tr className='text-center'>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Nombre</th>
+                                                        <th scope="col">Descripcion</th>
+                                                        <th scope="col">Operacion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {(() => {
+                                                        return (
+                                                            operaciones.map((operacion, index) => (
+                                                                <Operacion key={operacion.id} operacion={operacion} listOperaciones={listOperaciones} count={index + 1} />
+                                                            ))
+                                                        )
+                                                    })()}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )
+                                }
+                            })()
+                        }
                     </div>
                 </div>
             </ResponsiveContainer >

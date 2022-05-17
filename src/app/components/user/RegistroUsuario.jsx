@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import {alert_success,alert_error,verificarCamposRegister} from "../../util/functions.js";
+import {alert_success,alert_error,verificarCamposRegister,firstCharUpper} from "../../util/functions.js";
 import { createUserFirebase } from "../../util/firebase.js";
 import "../../../index.css";
 
@@ -58,27 +58,6 @@ function RegistroUsuario() {
     };
     return valores_iniciales;
   };
-
-  function firstCharUpper(cadena){
-    let array = cadena.split(" ");
-    let word = "";
-    cadena = "";
-    for (let i = 0; i < array.length;i++){
-      for (let j = 0; j < array[i].length; j++) {
-        if(j===0){
-          word += array[i].charAt(j).toUpperCase();
-        }else{
-          word += array[i].charAt(j);
-        }
-      }
-      cadena += word;
-      word = "";
-      if((i+1)<array.length){
-        cadena += " ";
-      }
-    }
-    return cadena;
-  }
 
   return (
     <div className="maincontainer">

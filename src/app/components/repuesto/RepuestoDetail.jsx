@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
 import { alert_error } from "../../util/functions";
 
-const repuesto = ({ repuesto }) => {
+const Repuesto = ({ repuesto }) => {
 
      return (
           <div className="container">
@@ -37,6 +37,7 @@ const repuesto = ({ repuesto }) => {
 }
 
 const DetalleRepuesto = () => {
+     
 }
 
 export default DetalleRepuesto;

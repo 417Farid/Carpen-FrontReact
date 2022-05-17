@@ -5,9 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import * as authService from '../../auth/auth.service';
-import { alert_error, alert_success, firstCharUpper } from '../../util/functions';
+import { alert_error, firstCharUpper,alert_success } from '../../util/functions';
 
-function RegistrarOperacion() {
+function RegistrarMarca() {
   const { id } = useParams();
 
   const valores_iniciales = {
@@ -15,29 +15,29 @@ function RegistrarOperacion() {
     descripcion: "",
   };
 
-  const [operacion, setOperacion] = useState(valores_iniciales);
+  const [marca, setMarca] = useState(valores_iniciales);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const operacion = upperCase();
+    const marca = upperCase();
     try {
       if (id) {
-        const response = await authService.updateOperacion(operacion, id);
+        const response = await authService.updateMarca(marca, id);
         if (parseInt(response.status) === 200) {
-          alert_success("Exito!", "Operacion actualizada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
+          alert_success("Exito!", "Marca actualizada correctamente.");
+          setTimeout(() => { navigate("/marcas") }, 1500);
         } else {
-          alert_error("Error!", "No se pudo actualizar la operacion.");
+          alert_error("Error!", "No se pudo actualizar la marca.");
         }
       } else {
-        const response = await authService.addOperacion(operacion);
-        if (parseInt(response.status) === 201) {
-          alert_success("Exito!", "Operacion agregada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
-        } else {
-          alert_error("Error!", "No se pudo agregar la operacion.");
-        }
+        const response = await authService.addMarca(marca);
+          if (parseInt(response.status) === 201) {
+            alert_success("Exito!", "Marca agregada correctamente.");
+            setTimeout(() => { navigate("/marcas") }, 1500);
+          } else {
+            alert_error("Error!", "No se pudo agregar la marca.");
+          }
       }
     } catch (error) {
       console.log(error);
@@ -45,26 +45,26 @@ function RegistrarOperacion() {
   };
 
   const handleInputChange = (e) => {
-    setOperacion({ ...operacion, [e.target.name]: e.target.value });
+    setMarca({ ...marca, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
     if (id) {
-      authService.findOperacion(id).then(response => {
-          if (response.error === "") {
-            setOperacion(response.operacion);
-          } else {
-            alert_error("Error!", "No se encontró ninguna Operacion con esos datos.");
-            setTimeout(() => { navigate(-1) }, 2000);
-          }
+      authService.findMarca(id).then(response => {
+        if (response.error === "") {
+          setMarca(response.marca);
+        } else {
+          alert_error("Error!", "No se encontró ninguna marca con esos datos.");
+          setTimeout(() => { navigate("/marcas") }, 2000);
+        }
       })
     }
   }, []);
 
   function upperCase() {
     const valores_iniciales = {
-      nombre: firstCharUpper(operacion.nombre),
-      descripcion: operacion.descripcion,
+      nombre: firstCharUpper(marca.nombre.toLowerCase()),
+      descripcion: marca.descripcion,
     };
     return valores_iniciales;
   };
@@ -77,8 +77,8 @@ function RegistrarOperacion() {
             <Typography component="h2" variant="h5" color="dark" gutterBottom>
               {
                 id
-                  ? "Editar Operación Mantenimiento"
-                  : "Registro Operación Mantenimiento"
+                  ? "Editar Marca"
+                  : "Registro Marca"
               }
             </Typography>
             <hr />
@@ -86,31 +86,30 @@ function RegistrarOperacion() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Nombre de la Operacion</label>
+                    <label>Nombre de la Marca</label>
                     <input
                       id="nombre"
                       type="text"
                       className="form-control"
-                      placeholder="Nombre de la Operacion"
+                      placeholder="Nombre de la Marca"
                       name="nombre"
-                      value={operacion.nombre}
+                      value={marca.nombre}
                       onChange={handleInputChange}
                       required
-                      maxLength="50"
+                      maxLength="100"
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion de la Operacion</label>
+                    <label>Descripcion de la Marca</label>
                     <input
                       id="descripcion"
                       type="text"
                       className="form-control"
-                      placeholder="Descripcion de la Operacion"
+                      placeholder="Descripcion de la Marca"
                       name="descripcion"
-                      value={operacion.descripcion}
+                      value={marca.descripcion}
                       onChange={handleInputChange}
-                      required
-                      maxLength="100"
+                      maxLength="200"
                     />
                   </div>
                 </div>
@@ -128,10 +127,9 @@ function RegistrarOperacion() {
             </div>
           </div>
         </div>
-
       </ResponsiveContainer >
     </React.Fragment >
   );
 }
 
-export default RegistrarOperacion;
+export default RegistrarMarca;

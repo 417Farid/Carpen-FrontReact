@@ -4,10 +4,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Home from "@mui/icons-material/Home";
-import RepairIcon from "@mui/icons-material/CarRepair";
+import CarRepairIcon from '@mui/icons-material/CarRepair';
 import MapIcon from "@mui/icons-material/Map";
 import PeopleIcon from "@mui/icons-material/People";
-import * as authService from '../../auth/auth.service'
+import HandymanIcon from '@mui/icons-material/Handyman';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import GarageIcon from '@mui/icons-material/Garage';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import * as authService from '../../auth/auth.service';
 
 export default function MenuList() {
      const [user, setUser] = React.useState([]);
@@ -34,19 +39,72 @@ export default function MenuList() {
                     </ListItemIcon>
                     <ListItemText primary="Inicio" />
                </ListItemButton>
-
+               {
+                    admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/marcas') }}>
+                              <ListItemIcon>
+                                   <BookmarkIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Marcas" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
                {
                     admin
                          ?
                          <ListItemButton onClick={() => { navigate('/talleres') }}>
                               <ListItemIcon>
-                                   <RepairIcon />
+                                   <GarageIcon />
                               </ListItemIcon>
                               <ListItemText primary="Talleres" />
                          </ListItemButton>
                          :
                          <div hidden></div>
                }
+               {
+                    admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/operaciones') }}>
+                              <ListItemIcon>
+                                   <HandymanIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Operaciones" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               {
+                    admin
+                         ?
+                         <ListItemButton>
+                              <ListItemIcon>
+                                   <IntegrationInstructionsIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Intervalos" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               {
+                    admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/repuestos') }}>
+                              <ListItemIcon>
+                                   <HomeRepairServiceIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Repuestos" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               <ListItemButton onClick={() => { navigate('/mantenimientos') }}>
+                    <ListItemIcon>
+                         <CarRepairIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Mantenimientos" />
+               </ListItemButton>
 
                <ListItemButton>
                     <ListItemIcon>

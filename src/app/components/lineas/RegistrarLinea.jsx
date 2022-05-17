@@ -5,66 +5,66 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import * as authService from '../../auth/auth.service';
-import { alert_error, alert_success, firstCharUpper } from '../../util/functions';
+import { alert_error, firstCharUpper,alert_success } from '../../util/functions';
 
-function RegistrarOperacion() {
-  const { id } = useParams();
+function RegistrarLinea() {
+  const { id_linea,id_marca } = useParams();
 
   const valores_iniciales = {
     nombre: "",
     descripcion: "",
   };
 
-  const [operacion, setOperacion] = useState(valores_iniciales);
+  const [linea, setLinea] = useState(valores_iniciales);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const operacion = upperCase();
+    const linea = upperCase();
     try {
-      if (id) {
-        const response = await authService.updateOperacion(operacion, id);
+      if (id_linea) {
+        const response = await authService.updateLinea(linea, id_linea);
         if (parseInt(response.status) === 200) {
-          alert_success("Exito!", "Operacion actualizada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
+          alert_success("Exito!", "Linea actualizada correctamente.");
+          setTimeout(() => { navigate(-1) }, 1500);
         } else {
-          alert_error("Error!", "No se pudo actualizar la operacion.");
+          alert_error("Error!", "No se pudo actualizar la linea.");
         }
       } else {
-        const response = await authService.addOperacion(operacion);
-        if (parseInt(response.status) === 201) {
-          alert_success("Exito!", "Operacion agregada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
-        } else {
-          alert_error("Error!", "No se pudo agregar la operacion.");
-        }
+        const response = await authService.addLinea(linea, id_marca);
+          if (parseInt(response.status) === 201) {
+            alert_success("Exito!", "Linea agregada correctamente.");
+            setTimeout(() => { navigate(-1) }, 1500);
+          } else {
+            alert_error("Error!", "No se pudo agregar la linea.");
+          }
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleInputChange = (e) => {
-    setOperacion({ ...operacion, [e.target.name]: e.target.value });
-  };
-
   useEffect(() => {
-    if (id) {
-      authService.findOperacion(id).then(response => {
-          if (response.error === "") {
-            setOperacion(response.operacion);
-          } else {
-            alert_error("Error!", "No se encontró ninguna Operacion con esos datos.");
-            setTimeout(() => { navigate(-1) }, 2000);
-          }
+    if (id_linea) {
+      authService.findLinea(id_linea).then(response => {
+        if (response.error === "") {
+          setLinea(response.linea);
+        } else {
+          alert_error("Error!", "No se encontró ninguna linea con esos datos.");
+          setTimeout(() => { navigate(-1) }, 2000);
+        }
       })
     }
   }, []);
 
+  const handleInputChange = (e) => {
+    setLinea({ ...linea, [e.target.name]: e.target.value });
+  };
+
   function upperCase() {
     const valores_iniciales = {
-      nombre: firstCharUpper(operacion.nombre),
-      descripcion: operacion.descripcion,
+      nombre: firstCharUpper(linea.nombre),
+      descripcion: linea.descripcion,
     };
     return valores_iniciales;
   };
@@ -76,9 +76,9 @@ function RegistrarOperacion() {
           <div className="container-fluid">
             <Typography component="h2" variant="h5" color="dark" gutterBottom>
               {
-                id
-                  ? "Editar Operación Mantenimiento"
-                  : "Registro Operación Mantenimiento"
+                id_linea
+                  ? "Editar Linea"
+                  : "Registro Linea"
               }
             </Typography>
             <hr />
@@ -86,28 +86,28 @@ function RegistrarOperacion() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Nombre de la Operacion</label>
+                    <label>Nombre de la Linea</label>
                     <input
                       id="nombre"
                       type="text"
                       className="form-control"
-                      placeholder="Nombre de la Operacion"
+                      placeholder="Nombre de la Linea"
                       name="nombre"
-                      value={operacion.nombre}
+                      value={linea.nombre}
                       onChange={handleInputChange}
                       required
                       maxLength="50"
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion de la Operacion</label>
+                    <label>Descripcion de la Linea</label>
                     <input
                       id="descripcion"
                       type="text"
                       className="form-control"
-                      placeholder="Descripcion de la Operacion"
+                      placeholder="Descripcion de la Linea"
                       name="descripcion"
-                      value={operacion.descripcion}
+                      value={linea.descripcion}
                       onChange={handleInputChange}
                       required
                       maxLength="100"
@@ -117,7 +117,7 @@ function RegistrarOperacion() {
                 <div className="d-flex justify-content-center">
                   <button className="btn btn-primary btn-block my-2" type="submit">
                     {
-                      id
+                      id_linea
                         ? "Actualizar"
                         : "Registrar"
                     }
@@ -134,4 +134,4 @@ function RegistrarOperacion() {
   );
 }
 
-export default RegistrarOperacion;
+export default RegistrarLinea;

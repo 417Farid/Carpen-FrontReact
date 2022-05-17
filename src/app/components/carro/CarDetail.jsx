@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import { useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
+import { alert_error } from "../../util/functions";
 
 const Vehiculo = ({ vehiculo }) => {
 
@@ -35,17 +36,13 @@ const Vehiculo = ({ vehiculo }) => {
           }
      }
 
-     useEffect(()=>{
+     useEffect(() => {
           getMarca();
           getLinea();
-     },[]);
+     }, []);
 
      return (
-          <div className="container">
-               <Typography component="h2" variant="h5" color="dark" gutterBottom>
-                    Información del Vehiculo
-               </Typography>
-               <hr />
+          <div className="container-fluid">
                <div className="row row-cols-sm-2 row-cols-1 mx-auto">
                     <figure className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-xs-12 col-sm-6">
                          <img src={vehiculo.foto} className="figure-img img-fluid rounded" alt="vehiculo" />
@@ -58,10 +55,7 @@ const Vehiculo = ({ vehiculo }) => {
                                    <div className="mb-1"><b>Marca: </b>{marca.nombre}</div>
                                    <div className="mb-1"><b>Modelo: </b>{vehiculo.modelo}</div>
                                    <div className="mb-1"><b>Linea: </b>{linea.nombre}</div>
-                                   <div className="mb-1 d-flex">
-                                        <div className="my-auto"><b>Color: </b>{vehiculo.color}</div>
-                                        <input type="color" disabled value={vehiculo.color} className="mx-2 form-control form-control-color" id="exampleColorInput" title="Choose your color" />
-                                   </div>
+                                   <div className="mb-1"><b>Color: </b>{vehiculo.color}</div>
                                    <div className="mb-1"><b>Placa: </b>{vehiculo.placa}</div>
                                    <div className="mb-1"><b>Tipo Combustible: </b>{vehiculo.tipoCombustible}</div>
                               </div>
@@ -101,7 +95,11 @@ const DetalleVehiculo = () => {
           try {
                authService.findVehiculo(id).then(response => {
                     response.json().then(value => {
-                         setVehiculo(value);
+                         if(parseInt(response.status)===200){
+                              setVehiculo(value);
+                         }else{
+                              alert_error("Error!", "No se pudo encontrar el vehiculo.")
+                         }
                     });
                });
           } catch (error) {
@@ -116,11 +114,17 @@ const DetalleVehiculo = () => {
      return (
           <React.Fragment>
                <ResponsiveContainer>
-                    {
-                         vehiculo
-                              ? <Vehiculo vehiculo={vehiculo} />
-                              : <div></div>
-                    }
+                    <div className="container">
+                         <Typography component="h2" variant="h5" color="dark" gutterBottom>
+                              Información del Vehiculo
+                         </Typography>
+                         <hr />
+                         {
+                              vehiculo
+                                   ? <Vehiculo vehiculo={vehiculo} />
+                                   : <div className="mx-auto text-center"><h1>No se encontró el vehiculo.</h1></div>
+                         }
+                    </div>
                </ResponsiveContainer>
           </React.Fragment>
      );
