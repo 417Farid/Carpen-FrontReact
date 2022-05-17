@@ -439,7 +439,7 @@ export const addRepuesto = async (repuesto) => {
     },
     body: JSON.stringify({
       'nombre': String(repuesto.nombre).trim(),
-      'descripcion': String(operacion.descripcion).trim(),
+      'descripcion': String(repuesto.descripcion).trim(),
       'marca': "",
       'fabricante': "",
       'foto': "",
@@ -448,7 +448,7 @@ export const addRepuesto = async (repuesto) => {
   })
 }
 
-export const updateOperacion = async (operacion, id_operacion) => {
+export const updateRepuesto = async (operacion, id_operacion) => {
   return await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "operaciones-mantenimientos/" + id_operacion + "/", {
     method: "PATCH",
     headers: {
