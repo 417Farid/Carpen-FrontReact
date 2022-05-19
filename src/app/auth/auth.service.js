@@ -3,7 +3,7 @@ import { eliminarImagen } from "../util/firebase";
 const API_URL_VEHICULOS = "http://127.0.0.1:8099/";
 const API_URL_TALLERES = "http://127.0.0.1:8080/";
 const API_URL_PROGRAMA_MANTENIMIENTO = "http://127.0.0.1:8070/";
-const API_URL_MANTENIMIENTOS = "http://127.0.0.1:8070/";
+const API_URL_MANTENIMIENTOS = "http://127.0.0.1:8060/";
 
 //const API_AUTH_TOKEN = "http://127.0.0.1:8099/api-generate-token/"
 
@@ -418,6 +418,10 @@ export const deleteMantenimiento = async (id_mantenimiento) => {
   });
 }
 
+export const getMantenimientos_Vehiculo = async (id_car) => {
+  return await (await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/getMantenimientos/?vehiculo=" + id_car)).json();
+}
+
 /*--------------------------------END------------------------------------*/
 
 /*--------------------------------REPUESTOS------------------------------------*/
@@ -426,11 +430,15 @@ export const getRepuestos = async () => {
   return await (await fetch(API_URL_TALLERES + "repuestos/")).json();
 }
 
+export const getRepuestos_Tipo = async (id_tipoRepuesto) => {
+  return await (await fetch(API_URL_TALLERES + "repuestos/getRepuestos/?tipoRepuesto="+id_tipoRepuesto)).json();
+}
+
 export const findRepuesto = async (id_repuesto) => {
   return await (await fetch(API_URL_TALLERES + "repuestos/" + id_repuesto + "/")).json();
 }
 
-export const addRepuesto = async (repuesto) => {
+export const addRepuesto = async (repuesto, id_tipoRepuesto) => {
   return await fetch(API_URL_TALLERES + "repuestos/", {
     method: "POST",
     headers: {
@@ -440,24 +448,69 @@ export const addRepuesto = async (repuesto) => {
     body: JSON.stringify({
       'nombre': String(repuesto.nombre).trim(),
       'descripcion': String(repuesto.descripcion).trim(),
-      'marca': "",
-      'fabricante': "",
-      'foto': "",
-      'claseRepuesto': "",
+      'marca': String(repuesto.marca).trim(),
+      'fabricante': String(repuesto.fabricante).trim(),
+      'foto': String(repuesto.foto).trim(),
+      'claseRepuesto': String(repuesto.claseRepuesto).trim(),
+      'tipoRepuesto': parseInt(id_tipoRepuesto),
     }),
   })
 }
 
-export const updateRepuesto = async (operacion, id_operacion) => {
-  return await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "operaciones-mantenimientos/" + id_operacion + "/", {
+export const updateRepuesto = async (repuesto, id_repuesto) => {
+  return await fetch(API_URL_TALLERES + "repuestos/" + id_repuesto + "/", {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json',
       //"Authorization": 'Token '+ auth_token,
     },
     body: JSON.stringify({
-      'nombre': String(operacion.nombre).trim(),
-      'descripcion': String(operacion.descripcion).trim(),
+      'nombre': String(repuesto.nombre).trim(),
+      'descripcion': String(repuesto.descripcion).trim(),
+      'marca': String(repuesto.marca).trim(),
+      'fabricante': String(repuesto.fabricante).trim(),
+      'foto': String(repuesto.foto).trim(),
+      'claseRepuesto': String(repuesto.claseRepuesto).trim(),
     }),
   })
+}
+
+/*--------------------------------END------------------------------------*/
+
+/*--------------------------------TIPOS REPUESTO------------------------------------*/
+
+export const getTiposRepuesto = async () => {
+  return await (await fetch(API_URL_TALLERES + "tipoRepuestos/")).json();
+}
+
+export const addTipoRepuesto = async (tipoRepuesto) => {
+  return await fetch(API_URL_TALLERES + "tipoRepuestos/", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'nombre': String(tipoRepuesto.nombre).trim(),
+      'descripcion': String(tipoRepuesto.descripcion).trim(),
+    }),
+  })
+}
+
+export const updateTipoRepuesto = async (tipoRepuesto, id_tipoRepuesto) => {
+  return await fetch(API_URL_TALLERES + "tipoRepuestos/" + id_tipoRepuesto + "/", {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'nombre': String(tipoRepuesto.nombre).trim(),
+      'descripcion': String(tipoRepuesto.descripcion).trim(),
+    }),
+  })
+}
+
+export const findTipoRepuesto = async (id_tipoRepuesto) => {
+  return await (await fetch(API_URL_TALLERES + "tipoRepuestos/" + id_tipoRepuesto + "/")).json();
 }

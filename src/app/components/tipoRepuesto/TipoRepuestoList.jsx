@@ -8,36 +8,36 @@ import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Typography from '@mui/material/Typography';
-import NoOperacion from './NoOperacion';
+import NoTipoRepuesto from './NoTipoRepuesto';
 
 import * as authService from "../../auth/auth.service";
 
-const Operacion = ({ operacion, listOperaciones, count }) => {
+const TipoRepuesto = ({ tipoRepuesto, listTipoRepuestos, count }) => {
     const navigate = useNavigate();
 
     return (
-        <tr className='text-center' key={operacion.id}>
+        <tr className='text-center' key={tipoRepuesto.id}>
             <th scope="col">{count}</th>
-            <td scope="col">{operacion.nombre}</td>
-            <td scope="col">{operacion.descripcion}</td>
+            <td scope="col">{tipoRepuesto.nombre}</td>
+            <td scope="col">{tipoRepuesto.descripcion}</td>
             <td scope='col'>
-                <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + operacion.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + operacion.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
-                <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
+                <IconButton onClick={() => { navigate("/tiposRepuesto/editar_tipoRepuesto/" + tipoRepuesto.id) }} title='Editar Tipo Repuesto' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/tiposRepuesto/"+tipoRepuesto.id+"/ver_repuestos/") }} title='Ver Repuestos' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
+                <IconButton title='Borrar Tipo Repuesto' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
     );
 }
 
-function OperacionList() {
-    const [operaciones, setOperaciones] = useState([]);
+function TiposRepuestoList() {
+    const [tiposRepuesto, setTipoRepuesto] = useState([]);
     const navigate = useNavigate();
 
-    const listOperaciones = async () => {
+    const listTiposRepuesto = async () => {
         try {
-            const response = await authService.getOperaciones();
+            const response = await authService.getTiposRepuesto();
             if (response.error === "") {
-                setOperaciones(response.rows);
+                setTipoRepuesto(response.rows);
             }
         } catch (error) {
             console.log(error);
@@ -48,8 +48,8 @@ function OperacionList() {
     }
 
     useEffect(() => {
-        if (operaciones.length === 0) {
-            listOperaciones();
+        if (tiposRepuesto.length === 0) {
+            listTiposRepuesto();
         }
     }, []);
 
@@ -58,17 +58,17 @@ function OperacionList() {
             <ResponsiveContainer>
                 <div className="container">
                     <Typography component="h2" variant="h5" color="dark" gutterBottom>
-                        Operaciones Disponibles
+                        Tipos de Repuesto
                     </Typography>
                     {
                         (() => {
-                            if (operaciones.length !== 0) {
+                            if (tiposRepuesto.length !== 0) {
                                 return (
                                     <nav className="navbar navbar-light bg-light">
                                         <div className="container-fluid">
-                                            <button type='button' onClick={() => { navigate('/operaciones/agregar_operacion') }} className='btn btn-primary m-2'>Agregar Operacion</button>
+                                            <button type='button' onClick={() => { navigate('/tiposRepuesto/agregar_tipoRepuesto') }} className='btn btn-primary m-2'>Agregar Tipo</button>
                                             <form className="d-flex">
-                                                <input id='buscarOperacion' className="form-control me-2" type="search" placeholder="Buscar Operacion Nombre" aria-label="Buscar" />
+                                                <input id='buscarTipoRepuesto' className="form-control me-2" type="search" placeholder="Buscar Tipo Nombre" aria-label="Buscar" />
                                                 <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                                             </form>
                                         </div>
@@ -81,8 +81,8 @@ function OperacionList() {
                     <div className="container-fluid">
                         {
                             (() => {
-                                if (operaciones.length === 0) {
-                                    return (<NoOperacion />)
+                                if (tiposRepuesto.length === 0) {
+                                    return (<NoTipoRepuesto />)
                                 } else {
                                     return (
                                         <div className="table-responsive">
@@ -92,14 +92,14 @@ function OperacionList() {
                                                         <th scope="col">#</th>
                                                         <th scope="col">Nombre</th>
                                                         <th scope="col">Descripcion</th>
-                                                        <th scope="col">Operacion</th>
+                                                        <th scope="col">Opciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {(() => {
                                                         return (
-                                                            operaciones.map((operacion, index) => (
-                                                                <Operacion key={operacion.id} operacion={operacion} listOperaciones={listOperaciones} count={index + 1} />
+                                                            tiposRepuesto.map((tipoRepuesto, index) => (
+                                                                <TipoRepuesto key={tipoRepuesto.id} tipoRepuesto={tipoRepuesto} listTipoRepuestos={listTiposRepuesto} count={index + 1} />
                                                             ))
                                                         )
                                                     })()}
@@ -117,4 +117,4 @@ function OperacionList() {
     )
 };
 
-export default OperacionList;
+export default TiposRepuestoList;

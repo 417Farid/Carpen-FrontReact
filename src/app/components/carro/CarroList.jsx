@@ -73,8 +73,8 @@ function CarroList() {
                                 <div className="container-fluid">
                                     <button type='button' onClick={() => { navigate('/home/agregar_vehiculo') }} className='btn btn-primary m-2'>Agregar Vehiculo</button>
                                     <form className="d-flex">
-                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo Placa" aria-label="Search" maxLength="10" />
-                                        <button className="btn btn-success" onClick={()=>{handleBuscar()}} type="button">Search</button>
+                                        <input id='buscarVehiculo' className="form-control me-2" type="search" placeholder="Buscar Vehiculo Placa" aria-label="Buscar" maxLength="10" />
+                                        <button className="btn btn-success" onClick={()=>{handleBuscar()}} type="button">Buscar</button>
                                     </form>
                                 </div>
                             </nav>

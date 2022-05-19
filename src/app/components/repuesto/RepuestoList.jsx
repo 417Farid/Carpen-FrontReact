@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { ResponsiveContainer } from 'recharts';
@@ -15,12 +15,13 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import { alert_error, alert_success } from '../../util/functions';
 
 
-const Repuesto = ({ repuesto, listRepuestos, count }) => {
+const Repuesto = ({ repuesto, listRepuestos, count, id_repuesto}) => {
+  const {id_tipoRepuesto} = useParams();
   const navigate = useNavigate();
 
   const deleteTaller = async () => {
-    try {
-      const response = await authService.deleteTaller(repuesto.id);
+    /*try {
+      const response = await authService.deleteTaller(id_repuesto);
       if (parseInt(response.status) === 200) {
         alert_success("Exito!", "Repuesto eliminado correctamente!");
         setTimeout(() => { listRepuestos() }, 2000)
@@ -29,7 +30,7 @@ const Repuesto = ({ repuesto, listRepuestos, count }) => {
       }
     } catch (error) {
       console.log(error);
-    }
+    }*/
   }
 
   return (
@@ -40,8 +41,8 @@ const Repuesto = ({ repuesto, listRepuestos, count }) => {
       <td>{repuesto.fabricante}</td>
       <td>{repuesto.claseRepuesto}</td>
       <td className='row-cols-2 row-cols-md-auto'>
-        <IconButton onClick={() => { navigate("/repuestos/editar_repuesto/" + repuesto.id) }} title='Editar Repuesto' style={{ color: "blue" }}><EditIcon /></IconButton>
-        <IconButton onClick={() => { navigate("/repuestos/ver_repuesto/" + repuesto.id) }} title='Ver Repuesto' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+        <IconButton onClick={() => { navigate("/tiposRepuesto/"+id_tipoRepuesto+"/ver_repuestos/editar_repuesto/" + id_repuesto) }} title='Editar Repuesto' style={{ color: "blue" }}><EditIcon /></IconButton>
+        <IconButton onClick={() => { navigate("/tiposRepuesto/"+id_tipoRepuesto+"/ver_repuestos/repuesto/" + id_repuesto) }} title='Ver Repuesto' style={{ color: "grey" }}><PageviewIcon /></IconButton>
         <IconButton onClick={() => { deleteTaller() }} title='Borrar Repuesto' style={{ color: "red" }}><DeleteForever /></IconButton>
       </td>
     </tr>
@@ -50,6 +51,7 @@ const Repuesto = ({ repuesto, listRepuestos, count }) => {
 
 
 function RepuestoList() {
+  const {id_tipoRepuesto} = useParams();
   const [repuestos, setRepuestos] = useState([]);
   const navigate = useNavigate();
 
@@ -64,6 +66,18 @@ function RepuestoList() {
     }
   };
 
+  const getRepuestos = ()=>{
+    try {
+      authService.getRepuestos_Tipo(id_tipoRepuesto).then(response => {
+        if (response.error === "") {
+          setRepuestos(response.repuestos);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleBuscar = () => {
     let nombre = document.getElementById("buscarRespuestos").value;
     repuestos.forEach(taller => {
@@ -75,8 +89,12 @@ function RepuestoList() {
   }
 
   useEffect(() => {
-    if (repuestos.length === 0) {
-      listRepuestos();
+    if (id_tipoRepuesto) {
+      getRepuestos();
+    } else {
+      if (repuestos.length === 0) {
+        listRepuestos();
+      }
     }
   }, [])
 
@@ -95,8 +113,8 @@ function RepuestoList() {
                     <div className="container-fluid">
                       <button type='button' onClick={() => { navigate('/repuestos/agregar_repuesto') }} className='btn btn-primary m-2'>Agregar Repuesto</button>
                       <form className="d-flex">
-                        <input id='buscarRepuestos' className="form-control me-2" type="search" placeholder="Buscar Repuesto Nombre" aria-label="Search" />
-                        <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                        <input id='buscarRepuestos' className="form-control me-2" type="search" placeholder="Buscar Repuesto Nombre" aria-label="Buscar" />
+                        <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                       </form>
                     </div>
                   </nav>
@@ -126,11 +144,19 @@ function RepuestoList() {
                         <tbody>
                           {
                             (() => {
-                              return (
-                                repuestos.map((repuesto, index) => (
-                                  <Repuesto key={repuesto.id} repuesto={repuesto} listRepuestos={listRepuestos} count={index + 1} />
-                                ))
-                              )
+                              if(id_tipoRepuesto){
+                                return (
+                                  repuestos.map((repuesto, index) => (
+                                    <Repuesto key={repuesto.pk} repuesto={repuesto.fields} id_repuesto={repuesto.pk} listRepuestos={getRepuestos} count={index + 1} />
+                                  ))
+                                )
+                              }else{
+                                return (
+                                  repuestos.map((repuesto, index) => (
+                                    <Repuesto key={repuesto.id} repuesto={repuesto} listRepuestos={listRepuestos} count={index + 1} />
+                                  ))
+                                )
+                              }
                             })()
                           }
                         </tbody>

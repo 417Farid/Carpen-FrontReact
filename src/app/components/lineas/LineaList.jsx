@@ -108,8 +108,8 @@ function LineaList() {
                     <div className="container-fluid">
                       <button type='button' onClick={() => { navigate('/marcas/'+id_marca+'/agregar_linea') }} className='btn btn-primary m-2'>Agregar Linea</button>
                       <form className="d-flex">
-                        <input id='buscarLinea' className="form-control me-2" type="search" placeholder="Buscar Linea Nombre" aria-label="Search" />
-                        <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                        <input id='buscarLinea' className="form-control me-2" type="search" placeholder="Buscar Linea Nombre" aria-label="Buscar" />
+                        <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                       </form>
                     </div>
                   </nav>
@@ -140,7 +140,7 @@ function LineaList() {
                             if (id_marca) {
                               return (
                                 lineas.map((linea, index) => (
-                                  <Linea key={linea.pk} linea={linea.fields} listMarcas={listLineas} id_linea={linea.pk} count={index + 1} />
+                                  <Linea key={linea.pk} linea={linea.fields} listLineas={getLineas} id_linea={linea.pk} count={index + 1} />
                                 ))
                               )
                             } else {

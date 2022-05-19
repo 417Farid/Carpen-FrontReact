@@ -44,7 +44,7 @@ const Vehiculo = ({ vehiculo }) => {
      return (
           <div className="container-fluid">
                <div className="row row-cols-sm-2 row-cols-1 mx-auto">
-                    <figure className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-xs-12 col-sm-6">
+                    <figure className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-xs-12 col-sm-6 text-center">
                          <img src={vehiculo.foto} className="figure-img img-fluid rounded" alt="vehiculo" />
                          <figcaption className="figure-caption text-end">{marca.nombre + ' - ' + vehiculo.modelo}</figcaption>
                     </figure>

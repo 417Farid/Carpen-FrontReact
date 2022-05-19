@@ -97,8 +97,8 @@ function TallerList() {
                     <div className="container-fluid">
                       <button type='button' onClick={() => { navigate('/talleres/agregar_taller') }} className='btn btn-primary m-2'>Agregar Taller</button>
                       <form className="d-flex">
-                        <input id='buscarTaller' className="form-control me-2" type="search" placeholder="Buscar Taller Nombre" aria-label="Search" />
-                        <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                        <input id='buscarTaller' className="form-control me-2" type="search" placeholder="Buscar Taller Nombre" aria-label="Buscar" />
+                        <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                       </form>
                     </div>
                   </nav>

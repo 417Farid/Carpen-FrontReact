@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate , useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveContainer } from 'recharts';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import * as authService from '../../auth/auth.service';
-import { alert_error, alert_success, firstCharUpper } from '../../util/functions';
+import { alert_error, alert_success, firstCharUpper, generateClick } from '../../util/functions';
 
 function RegistrarRepuesto() {
 
-  const { id } = useParams();
+  const { id_repuesto, id_tipoRepuesto } = useParams();
 
   const valores_iniciales = {
     nombre: "",
@@ -25,23 +25,23 @@ function RegistrarRepuesto() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const operacion = upperCase();
+    const repuesto = upperCase();
     try {
-      if (id) {
-        const response = await authService.updateOperacion(operacion, id);
+      if (id_repuesto) {
+        const response = await authService.updateRepuesto(repuesto, id_repuesto);
         if (parseInt(response.status) === 200) {
-          alert_success("Exito!", "Operacion actualizada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
+          alert_success("Exito!", "Repuesto actualizado correctamente.");
+          setTimeout(() => { navigate("/repuestos") }, 1500);
         } else {
-          alert_error("Error!", "No se pudo actualizar la operacion.");
+          alert_error("Error!", "No se pudo actualizar el repuesto.");
         }
       } else {
-        const response = await authService.addOperacion(operacion);
+        const response = await authService.addRepuesto(repuesto, id_tipoRepuesto);
         if (parseInt(response.status) === 201) {
-          alert_success("Exito!", "Operacion agregada correctamente.");
-          setTimeout(() => { navigate("/operaciones") }, 1500);
+          alert_success("Exito!", "Repuesto agregado correctamente.");
+          setTimeout(() => { navigate("/repuestos") }, 1500);
         } else {
-          alert_error("Error!", "No se pudo agregar la operacion.");
+          alert_error("Error!", "No se pudo agregar el repuesto.");
         }
       }
     } catch (error) {
@@ -65,12 +65,29 @@ function RegistrarRepuesto() {
     return valores_iniciales;
   };
 
+  useEffect(() => {
+    if (id_repuesto) {
+      authService.findRepuesto(id_repuesto).then(response => {
+        if (response.error === "") {
+          setRepuesto(response.repuesto);
+        } else {
+          alert_error("Error!", "No se encontró ningun repuesto con esos datos.");
+          setTimeout(() => { navigate(-1) }, 2000);
+        }
+      })
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <ResponsiveContainer>
         <div className="container">
           <Typography component="h2" variant="h5" color="dark" gutterBottom>
-            Registro del Repuesto
+            {
+              id_repuesto
+                ? "Editar Repuesto"
+                : "Registrar Repuesto"
+            }
           </Typography>
           <hr />
           <div className="container-fluid">
@@ -148,7 +165,7 @@ function RegistrarRepuesto() {
                     <option value="Alternativo">Alternativo</option>
                   </select>
                 </div>
-                <div className="form-group py-2">
+                <div className="form-group py-2" hidden={id_repuesto?true:false}>
                   <label>Foto del Repuesto</label>
                   <input
                     id="formFile"
@@ -162,11 +179,19 @@ function RegistrarRepuesto() {
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <button className="btn btn-primary btn-block my-2" type="button">
-                  Registrar
+                <button className="btn btn-primary btn-block my-2" type="button" onClick={()=>{
+                  if(id_repuesto){
+                    generateClick();
+                  }
+                }}>
+                  {
+                    id_repuesto
+                      ? "Actualizar"
+                      : "Registrar"
+                  }
                 </button>
                 <button type="button" className="btn btn-secondary btn-block my-2 mx-2" onClick={() => navigate(-1)}>Regresar</button>
-                <button id="btn_register_repo" type="submit" hidden></button>
+                  <button id="btn_register" type="submit" hidden></button>
               </div>
             </form>
           </div>

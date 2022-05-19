@@ -417,7 +417,7 @@ function RegistroCarro() {
                 <button className="btn btn-primary btn-block my-2" type="button"
                   onClick={() => {
                     if (id) {
-                      generateClick("btn_register_car");
+                      generateClick();
                     }else{
                       cargarImagen("vehiculos");
                     }
@@ -428,7 +428,7 @@ function RegistroCarro() {
                   }
                 </button>
                 <button type="button" className="btn btn-secondary btn-block my-2 mx-2" onClick={() => navigate(-1)}>Regresar</button>
-                <button id="btn_register_car" type="submit" hidden></button>
+                <button id="btn_register" type="submit" hidden></button>
               </div>
             </form>
           </div>

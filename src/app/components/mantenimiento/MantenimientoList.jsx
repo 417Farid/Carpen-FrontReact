@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { ResponsiveContainer } from 'recharts';
@@ -12,12 +12,13 @@ import * as authService from "../../auth/auth.service";
 import { alert_success, alert_error } from '../../util/functions';
 import NoMantenimiento from './NoMantenimiento';
 
-const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
+const Mantenimiento = ({ mantenimiento, listMantenimientos, count,id_mant }) => {
     const navigate = useNavigate();
+    const {id_car} = useParams();
 
     const deleteMantenimiento = async () => {
         try {
-            const response = await authService.deleteMantenimiento(mantenimiento.id);
+            const response = await authService.deleteMantenimiento(id_mant);
             if (parseInt(response.status) === 200) {
                 alert_success("Exito!", "Mantenimiento eliminado correctamente!");
                 setTimeout(() => { listMantenimientos() }, 2000)
@@ -30,27 +31,15 @@ const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
     }
 
     return (
-        /*<tr key={mantenimiento.id} className="text-center">
+        <tr key={id_mant} className="text-center">
             <th scope="row">{count}</th>
             <td>{mantenimiento.nombre}</td>
             <td>{mantenimiento.direccion}</td>
             <td>{mantenimiento.telefono}</td>
             <td>{mantenimiento.email}</td>
             <td className='row-cols-2 row-cols-md-auto'>
-                <IconButton onClick={() => { navigate("/mantenimientos/editar_mantenimiento/" + mantenimiento.id) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/mantenimientos/ver_mantenimiento/" + mantenimiento.id) }} title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
-                <IconButton onClick={() => { deleteMantenimiento() }} title='Borrar Mantenimiento' style={{ color: "red" }}><DeleteForever /></IconButton>
-            </td>
-        </tr>*/
-        <tr className="text-center">
-            <th scope="row">1</th>
-            <td>2000</td>
-            <td>Cambio Aceite</td>
-            <td>30000</td>
-            <td>Cambio de Aceite</td>
-            <td className='row-cols-2 row-cols-md-auto'>
-                <IconButton onClick={() => { navigate("/mantenimientos/editar_mantenimiento/" + 1) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/editar_mantenimiento/" + id_mant) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/ver_mantenimiento/" + id_mant) }} title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
                 <IconButton onClick={() => { deleteMantenimiento() }} title='Borrar Mantenimiento' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -58,18 +47,31 @@ const Mantenimiento = ({ mantenimiento, listMantenimientos, count }) => {
 }
 
 function MantenimientoList() {
-
+    const { id_car } = useParams();
     const [mantenimientos, setMantenimientos] = useState([]);
 
     const navigate = useNavigate();
 
-    const listMantenimientos = async () => {
-    };
+    const getMantenimientos = async () => {
+        try {
+            authService.getMantenimientos_Vehiculo(id_car).then(response => {
+                if (response.error === "") {
+                    setMantenimientos(response.mantenimientos);
+                    console.log(mantenimientos);
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const handleBuscar = () => {
     }
 
     useEffect(() => {
+        if (id_car) {
+            getMantenimientos();
+        }
     }, []);
 
     return (
@@ -77,18 +79,18 @@ function MantenimientoList() {
             <ResponsiveContainer>
                 <div className="container">
                     <Typography component="h2" variant="h5" color="dark" gutterBottom>
-                        Programa de Mantenimientos
+                        Mantenimientos del Vehiculo
                     </Typography>
                     {
                         (() => {
-                            if (mantenimientos.length === 0) {
+                            if (mantenimientos.length !== 0) {
                                 return (
                                     <nav className="navbar navbar-light bg-light">
                                         <div className="container-fluid">
-                                            <button type='button' onClick={() => { navigate('/mantenimientos/agregar_mantenimiento') }} className='btn btn-primary m-2'>Agregar Mantenimiento</button>
+                                            <button type='button' onClick={() => { navigate('/home/vehiculo/'+id_car+'/mantenimientos/agregar_mantenimiento') }} className='btn btn-primary m-2'>Agregar Mantenimiento</button>
                                             <form className="d-flex">
-                                                <input id='buscarTaller' className="form-control me-2" type="search" placeholder="Buscar Mantenimiento Nombre" aria-label="Search" />
-                                                <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                                                <input id='buscarMantenimiento' className="form-control me-2" type="search" placeholder="Buscar Mantenimiento Nombre" aria-label="Buscar" />
+                                                <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                                             </form>
                                         </div>
                                     </nav>
@@ -100,7 +102,7 @@ function MantenimientoList() {
                     <div className="container-fluid">
                         {
                             (() => {
-                                if (mantenimientos.length !== 0) {
+                                if (mantenimientos.length === 0) {
                                     return (<NoMantenimiento />)
                                 } else {
                                     return (
@@ -117,14 +119,15 @@ function MantenimientoList() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <Mantenimiento/>
-                                                    {/*(() => {
-                                                        return (
-                                                            mantenimientos.map((mantenimiento, index) => (
-                                                                <Mantenimiento key={mantenimiento.id} mantenimiento={mantenimiento} listMantenimientos={listMantenimientos} count={index + 1} />
-                                                            ))
-                                                        )
-                                                    })()*/}
+                                                    {
+                                                        (() => {
+                                                            return (
+                                                                mantenimientos.map((mantenimiento, index) => (
+                                                                    <Mantenimiento key={mantenimiento.pk} id_mant={mantenimiento.pk} mantenimiento={mantenimiento.fields} listMantenimientos={getMantenimientos} count={index + 1} />
+                                                                ))
+                                                            )
+                                                        })()
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>

@@ -178,6 +178,8 @@ export function firstCharUpper(cadena) {
      return cadena;
 }
 
-export function generateClick(name) {
-     document.getElementById(name).click();
+export function generateClick() {
+     console.log(document.getElementById("claseRepuesto").value)
+     let element = document.getElementById("btn_register");
+     
 }

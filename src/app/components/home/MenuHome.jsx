@@ -90,21 +90,15 @@ export default function MenuList() {
                {
                     admin
                          ?
-                         <ListItemButton onClick={() => { navigate('/repuestos') }}>
+                         <ListItemButton onClick={() => { navigate('/tiposRepuesto') }}>
                               <ListItemIcon>
                                    <HomeRepairServiceIcon />
                               </ListItemIcon>
-                              <ListItemText primary="Repuestos" />
+                              <ListItemText primary="Tipos Repuesto" />
                          </ListItemButton>
                          :
                          <div hidden></div>
                }
-               <ListItemButton onClick={() => { navigate('/mantenimientos') }}>
-                    <ListItemIcon>
-                         <CarRepairIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Mantenimientos" />
-               </ListItemButton>
 
                <ListItemButton>
                     <ListItemIcon>

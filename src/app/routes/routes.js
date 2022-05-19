@@ -29,6 +29,10 @@ import RegistrarLinea from '../components/lineas/RegistrarLinea';
 //Repuestos
 import RepuestoList from '../components/repuesto/RepuestoList';
 import RegistrarRepuesto from '../components/repuesto/RegistrarRepuesto';
+import DetalleRepuesto from '../components/repuesto/RepuestoDetail';
+//Tipos Repuesto
+import TipoRepuestoList from '../components/tipoRepuesto/TipoRepuestoList';
+import RegistrarTipoRepuesto from '../components/tipoRepuesto/RegistrarTipoRepuesto';
 
 const routes = {
      private: [
@@ -53,9 +57,19 @@ const routes = {
                element: <Dashboard contenedor={<DetalleVehiculo/>}/>
           },
           {
-               path: "/home/vehiculo/mantenimientos/:id",
-               name: "detalle_vehiculo",
+               path: "/home/vehiculo/:id_car/mantenimientos/",
+               name: "mantenimientos",
                element: <Dashboard contenedor={<MantenimientoList/>}/>
+          },
+          {
+               path: "/home/vehiculo/:id_car/mantenimientos/agregar_mantenimiento",
+               name: "agregar_mantenimiento",
+               element: <Dashboard contenedor={<RegistroMantenimiento/>}/>
+          },
+          {
+               path: "/home/vehiculo/:id_car/mantenimientos/editar_mantenimiento/:id_mant",
+               name: "editar_mantenimiento",
+               element: <Dashboard contenedor={<RegistroMantenimiento/>}/>
           },
           {
                path: "/usuarios",
@@ -93,14 +107,39 @@ const routes = {
                element: <Dashboard contenedor={<RegistrarRepuesto/>}/>
           },
           {
-               path: "/repuestos",
-               name: "repuestos",
+               path: "/tiposRepuesto",
+               name: "tiposRepuesto",
+               element: <Dashboard contenedor={<TipoRepuestoList/>}/>
+          },
+          {
+               path: "/tiposRepuesto/:id_tipoRepuesto/ver_repuestos",
+               name: "ver_repuestos",
                element: <Dashboard contenedor={<RepuestoList/>}/>
           },
           {
-               path: "/repuestos/agregar_repuesto",
+               path: "/tiposRepuesto/:id_tipoRepuesto/ver_repuestos/agregar_repuesto",
                name: "agregar_repuesto",
                element: <Dashboard contenedor={<RegistrarRepuesto/>}/>
+          },
+          {
+               path: "/tiposRepuesto/:id_tipoRepuesto/ver_repuestos/editar_repuesto/:id_repuesto",
+               name: "editar_repuesto",
+               element: <Dashboard contenedor={<RegistrarRepuesto/>}/>
+          },
+          {
+               path: "/tiposRepuesto/:id_tipoRepuesto/ver_repuestos/repuesto/:id_repuesto",
+               name: "ver_repuesto",
+               element: <Dashboard contenedor={<DetalleRepuesto/>}/>
+          },
+          {
+               path: "/tiposRepuesto/agregar_tipoRepuesto",
+               name: "agregar_tipoRepuesto",
+               element: <Dashboard contenedor={<RegistrarTipoRepuesto/>}/>
+          },
+          {
+               path: "/tiposRepuesto/editar_tipoRepuesto/:id_tipoRepuesto",
+               name: "editar_tipoRepuesto",
+               element: <Dashboard contenedor={<RegistrarTipoRepuesto/>}/>
           },
           {
                path: "/operaciones",
@@ -157,22 +196,6 @@ const routes = {
                name: "ver_lineas",
                element: <Dashboard contenedor={<LineaList/>}/>
           },
-          {
-               path: "/mantenimientos",
-               name: "mantenimientos",
-               element: <Dashboard contenedor={<MantenimientoList/>}/>
-          },
-          {
-               path: "/mantenimientos/agregar_mantenimiento",
-               name: "agregar_mantenimiento",
-               element: <Dashboard contenedor={<RegistroMantenimiento/>}/>
-          },
-          {
-               path: "/mantenimientos/editar_mantenimiento/:id",
-               name: "editar_mantenimiento",
-               element: <Dashboard contenedor={<RegistroMantenimiento/>}/>
-          },
-
      ],
      public: [
           {

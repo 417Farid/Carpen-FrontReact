@@ -96,8 +96,8 @@ function MarcaList() {
                     <div className="container-fluid">
                       <button type='button' onClick={() => { navigate('/marcas/agregar_marca') }} className='btn btn-primary m-2'>Agregar Marca</button>
                       <form className="d-flex">
-                        <input id='buscarMarca' className="form-control me-2" type="search" placeholder="Buscar Taller Nombre" aria-label="Search" />
-                        <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
+                        <input id='buscarMarca' className="form-control me-2" type="search" placeholder="Buscar Taller Nombre" aria-label="Buscar" />
+                        <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
                       </form>
                     </div>
                   </nav>

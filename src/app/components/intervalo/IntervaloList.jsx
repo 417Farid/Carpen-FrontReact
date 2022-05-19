@@ -7,37 +7,37 @@ import IconButton from '@mui/material/IconButton';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import Typography from '@mui/material/Typography';
-import NoOperacion from './NoOperacion';
+import Typography from '@mui/material/Typography';  
+import NoIntervalo from './NoIntervalo';
 
 import * as authService from "../../auth/auth.service";
 
-const Operacion = ({ operacion, listOperaciones, count }) => {
+const Intervalo = ({ intervalo, listIntervalos, count }) => {
     const navigate = useNavigate();
 
     return (
-        <tr className='text-center' key={operacion.id}>
+        <tr className='text-center' key={intervalo.id}>
             <th scope="col">{count}</th>
-            <td scope="col">{operacion.nombre}</td>
-            <td scope="col">{operacion.descripcion}</td>
+            <td scope="col">{intervalo.intervalo}</td>
+            <td scope="col">{intervalo.descripcion}</td>
             <td scope='col'>
-                <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + operacion.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + operacion.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
-                <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
+                <IconButton onClick={() => { navigate("/intervalos/editar_intervalo/" + intervalo.id) }} title='Editar Intervalo' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/intervalos/ver_intervalo/" + intervalo.id) }} title='Ver Intervalo' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
+                <IconButton title='Borrar Intervalo' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
     );
 }
 
-function OperacionList() {
-    const [operaciones, setOperaciones] = useState([]);
+function IntervaloList() {
+    const [intervalos, setIntervalos] = useState([]);
     const navigate = useNavigate();
 
-    const listOperaciones = async () => {
+    const IntervaloList = async () => {
         try {
-            const response = await authService.getOperaciones();
+            const response = await authService.getIntervalos();
             if (response.error === "") {
-                setOperaciones(response.rows);
+                setIntervalos(response.rows);
             }
         } catch (error) {
             console.log(error);
@@ -48,8 +48,8 @@ function OperacionList() {
     }
 
     useEffect(() => {
-        if (operaciones.length === 0) {
-            listOperaciones();
+        if (intervalos.length === 0) {
+            listIntervalos();
         }
     }, []);
 
@@ -58,18 +58,18 @@ function OperacionList() {
             <ResponsiveContainer>
                 <div className="container">
                     <Typography component="h2" variant="h5" color="dark" gutterBottom>
-                        Operaciones Disponibles
+                        Intervalos Disponibles
                     </Typography>
                     {
                         (() => {
-                            if (operaciones.length !== 0) {
+                            if (intervalos.length !== 0) {
                                 return (
                                     <nav className="navbar navbar-light bg-light">
                                         <div className="container-fluid">
-                                            <button type='button' onClick={() => { navigate('/operaciones/agregar_operacion') }} className='btn btn-primary m-2'>Agregar Operacion</button>
+                                            <button type='button' onClick={() => { navigate('/intervalos/agregar_intervalo') }} className='btn btn-primary m-2'>Agregar Intervalo</button>
                                             <form className="d-flex">
-                                                <input id='buscarOperacion' className="form-control me-2" type="search" placeholder="Buscar Operacion Nombre" aria-label="Buscar" />
-                                                <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
+                                                <input id='buscarIntervalos' className="form-control me-2" type="search" placeholder="Buscar Intervalo" aria-label="Search" />
+                                                <button className="btn btn-success" onClick={handleBuscar} type="button">Search</button>
                                             </form>
                                         </div>
                                     </nav>
@@ -81,8 +81,8 @@ function OperacionList() {
                     <div className="container-fluid">
                         {
                             (() => {
-                                if (operaciones.length === 0) {
-                                    return (<NoOperacion />)
+                                if (intervalos.length === 0) {
+                                    return (<NoIntervalo />)
                                 } else {
                                     return (
                                         <div className="table-responsive">
@@ -90,16 +90,15 @@ function OperacionList() {
                                                 <thead>
                                                     <tr className='text-center'>
                                                         <th scope="col">#</th>
-                                                        <th scope="col">Nombre</th>
+                                                        <th scope="col">Intervalo</th>
                                                         <th scope="col">Descripcion</th>
-                                                        <th scope="col">Operacion</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {(() => {
                                                         return (
-                                                            operaciones.map((operacion, index) => (
-                                                                <Operacion key={operacion.id} operacion={operacion} listOperaciones={listOperaciones} count={index + 1} />
+                                                            intervalos.map((intervalo, index) => (
+                                                                <Intervalo key={intervalo.id} operacion={intervalo} listOperaciones={listIntervalos} count={index + 1} />
                                                             ))
                                                         )
                                                     })()}
@@ -117,4 +116,4 @@ function OperacionList() {
     )
 };
 
-export default OperacionList;
+export default IntervaloList;
