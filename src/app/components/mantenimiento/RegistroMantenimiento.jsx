@@ -57,7 +57,7 @@ function RegistroMantenimiento() {
       authService.findVehiculo(id_car).then(response => {
         if (parseInt(response.status) === 200) {
           response.json().then(vehiculo=>{
-            setMantenimiento({...mantenimiento, "placa": vehiculo.placa});
+            setMantenimiento({...mantenimiento, "placaVehiculo": vehiculo.placa});
           });
         } else {
           console.log("No se encontró el vehiculo.")
