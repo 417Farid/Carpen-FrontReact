@@ -5,7 +5,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import IconButton from '@mui/material/IconButton';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import { alert_error, alert_success } from '../../util/functions';
 import * as authService from '../../auth/auth.service'
 import Swal from "sweetalert2";
@@ -90,8 +89,7 @@ export default function Card({ vehiculo, id_car, list_vehiculos }) {
             <div className='d-flex justify-content-evenly'>
               <IconButton onClick={() => { navigate("/home/editar_vehiculo/" + id_car) }} title='Editar Vehiculo' style={{ color: "blue" }}><EditIcon /></IconButton>
               <IconButton onClick={() => { navigate("/home/detalle_vehiculo/" + id_car) }} title='Ver Vehiculo' style={{ color: "grey" }}><PageviewIcon /></IconButton>
-              <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/") }} title='Ver Mantenimientos' style={{ color: "orange" }}><CarRepairIcon /></IconButton>
-              <IconButton title='Agregar Mantenimiento' style={{ color: "green" }}><AddBoxIcon /></IconButton>
+              <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos") }} title='Ver Mantenimientos' style={{ color: "green" }}><CarRepairIcon /></IconButton>
               <IconButton onClick={() => { handleDelete() }} title='Borrar Vehiculo' style={{ color: "red" }}><DeleteForever /></IconButton>
             </div>
           </div>

@@ -51,7 +51,7 @@ const Repuesto = ({ repuesto, listRepuestos, count, id_repuesto}) => {
 
 
 function RepuestoList() {
-  const {id_tipoRepuesto} = useParams();
+  const {id_tipoRepuesto,id_taller} = useParams();
   const [repuestos, setRepuestos] = useState([]);
   const navigate = useNavigate();
 
@@ -111,7 +111,7 @@ function RepuestoList() {
                 return (
                   <nav className="navbar navbar-light bg-light">
                     <div className="container-fluid">
-                      <button type='button' onClick={() => { navigate('/repuestos/agregar_repuesto') }} className='btn btn-primary m-2'>Agregar Repuesto</button>
+                      <button type='button' onClick={() => { navigate('/tiposRepuesto/'+id_tipoRepuesto+'/ver_repuestos/agregar_repuesto') }} className='btn btn-primary m-2'>Agregar Repuesto</button>
                       <form className="d-flex">
                         <input id='buscarRepuestos' className="form-control me-2" type="search" placeholder="Buscar Repuesto Nombre" aria-label="Buscar" />
                         <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
@@ -139,6 +139,7 @@ function RepuestoList() {
                             <th scope="col">Marca</th>
                             <th scope="col">Fabricante</th>
                             <th scope='col'>Clase</th>
+                            <th scope='col'>Opciones</th>
                           </tr>
                         </thead>
                         <tbody>

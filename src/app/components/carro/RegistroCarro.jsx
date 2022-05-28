@@ -18,7 +18,7 @@ function RegistroCarro() {
     marca: "",
     linea: "",
     modelo: "",
-    color: "#FFFFFF",
+    color: "",
     numeroSerie: "",
     numeroChasis: "",
     numeroMotor: "",
@@ -112,7 +112,7 @@ function RegistroCarro() {
             if (value.error === '') {
               authService.anexaVehiculoToUser(value.vehiculo).then(() => {
                 alert_success("Exito!", value.message);
-                navigate("/home");
+                setTimeout(() => { navigate("/home") }, 1500);
               });
             } else {
               alert_error(value.error, value.message);
@@ -180,7 +180,7 @@ function RegistroCarro() {
               <div className="row row-sm-auto row-cols-md-2">
                 <div className="">
                   <div className="form-group py-2">
-                    <label>Placa del Vehiculo</label>
+                    <label className="required">Placa del Vehiculo</label>
                     <div className="input-group">
                       <input id="placa1" required name="valor1_placa" value={vehiculo.valor1_placa} onChange={handleInputChange} maxLength="4" type="text" className="form-control" placeholder="Placa"/>
                       <span className="input-group-text">-</span>
@@ -188,7 +188,7 @@ function RegistroCarro() {
                     </div>
                   </div>
                   <div className="form-group py-2">
-                    <label>Marca del Vehiculo</label>
+                    <label className="required">Marca del Vehiculo</label>
                     <select
                       id="marca"
                       className="form-select"
@@ -212,7 +212,7 @@ function RegistroCarro() {
                     </select>
                   </div>
                   <div className="form-group py-2">
-                    <label>Modelo</label>
+                    <label className="required">Modelo</label>
                     <input
                       id="modelo"
                       type="number"
@@ -226,7 +226,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2 ">
-                    <label>Linea</label>
+                    <label className="required">Linea</label>
                     <select
                       id="linea"
                       className="form-select"
@@ -250,7 +250,7 @@ function RegistroCarro() {
                     </select>
                   </div>
                   <div className="form-group py-2">
-                    <label>Color</label>
+                    <label className="required">Color</label>
                     <input
                       id="color"
                       type="text"
@@ -264,7 +264,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Numero de Serie</label>
+                    <label className="required">Numero de Serie</label>
                     <input
                       id="num-serie"
                       type="text"
@@ -279,7 +279,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Numero de Chasis</label>
+                    <label className="required">Numero de Chasis</label>
                     <input
                       id="num-chasis"
                       type="text"
@@ -294,7 +294,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Numero de Motor</label>
+                    <label className="required">Numero de Motor</label>
                     <input
                       id="num-motor"
                       type="text"
@@ -311,7 +311,7 @@ function RegistroCarro() {
 
                 <div>
                   <div className="form-group py-2">
-                    <label>Tipo de Combustible</label>
+                    <label className="required">Tipo de Combustible</label>
                     <select
                       id="tipoCombustible"
                       className="form-select"
@@ -326,7 +326,7 @@ function RegistroCarro() {
                     </select>
                   </div>
                   <div className="form-group py-2">
-                    <label>Kilometraje Actual del Vehiculo</label>
+                    <label className="required">Kilometraje Actual del Vehiculo</label>
                     <input
                       id="kilometraje-actual"
                       type="number"
@@ -339,7 +339,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Kilometraje del Ultimo Mantenimiento</label>
+                    <label className="required">Kilometraje del Ultimo Mantenimiento</label>
                     <input
                       id="kilometraje-ultiMantenimiento"
                       type="number"
@@ -352,7 +352,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Nombre del Conductor</label>
+                    <label className="required">Nombre del Conductor</label>
                     <input
                       id="nom-conductor"
                       type="text"
@@ -365,21 +365,20 @@ function RegistroCarro() {
                       maxLength="100"
                     />
                   </div>
-                  <div className="form-group py-2">
-                    <label>Foto del Vehiculo</label>
+                  <div className="form-group py-2" hidden={id?true:false}>
+                    <label className="required">Foto del Vehiculo</label>
                     <input
                       id="formFile"
                       className="form-control"
                       type="file"
                       accept="image/png, image/jpeg"
-                      required
-                      disabled={id?true:false}
+                      required={id?false:true}
                     />
                     <input type="text" name="foto" id="foto" value={vehiculo.foto}
                       onChange={handleInputChange} hidden />
                   </div>
                   <div className="form-group py-2">
-                    <label>Fecha de SOAT:</label> <br />
+                    <label className="required">Fecha de SOAT:</label> <br />
                     <input
                       id="fecha-soat"
                       type="date"
@@ -390,7 +389,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Fecha de Tecnico Mecanica:</label> <br />
+                    <label className="required">Fecha de Tecnico Mecanica:</label> <br />
                     <input
                       id="fecha-soat"
                       type="date"
@@ -401,7 +400,7 @@ function RegistroCarro() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Fecha de Matricula:</label> <br />
+                    <label className="required">Fecha de Matricula:</label> <br />
                     <input
                       id="fecha-soat"
                       type="date"

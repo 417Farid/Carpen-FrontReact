@@ -86,7 +86,7 @@ function RegistrarLinea() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Nombre de la Linea</label>
+                    <label className="required">Nombre de la Linea</label>
                     <input
                       id="nombre"
                       type="text"
@@ -100,7 +100,7 @@ function RegistrarLinea() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion de la Linea</label>
+                    <label className="required">Descripcion de la Linea</label>
                     <input
                       id="descripcion"
                       type="text"

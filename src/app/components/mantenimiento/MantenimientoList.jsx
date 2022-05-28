@@ -31,15 +31,16 @@ const Mantenimiento = ({ mantenimiento, listMantenimientos, count,id_mant }) => 
     }
 
     return (
-        <tr key={id_mant} className="text-center">
+        <tr key={mantenimiento.id} className="text-center">
             <th scope="row">{count}</th>
-            <td>{mantenimiento.nombre}</td>
-            <td>{mantenimiento.direccion}</td>
-            <td>{mantenimiento.telefono}</td>
-            <td>{mantenimiento.email}</td>
+            <td>{mantenimiento.placaVehiculo}</td>
+            <td>{mantenimiento.kilometraje}</td>
+            <td>{mantenimiento.costo}</td>
+            <td>{mantenimiento.fecha}</td>
+            <td>{mantenimiento.formaPago}</td>
             <td className='row-cols-2 row-cols-md-auto'>
-                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/editar_mantenimiento/" + id_mant) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/ver_mantenimiento/" + id_mant) }} title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/editar_mantenimiento/" + mantenimiento.id) }} title='Editar Mantenimiento' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/home/vehiculo/"+id_car+"/mantenimientos/ver_mantenimiento/" + mantenimiento.id) }} title='Ver Mantenimiento' style={{ color: "grey" }}><PageviewIcon /></IconButton>
                 <IconButton onClick={() => { deleteMantenimiento() }} title='Borrar Mantenimiento' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -57,7 +58,6 @@ function MantenimientoList() {
             authService.getMantenimientos_Vehiculo(id_car).then(response => {
                 if (response.error === "") {
                     setMantenimientos(response.mantenimientos);
-                    console.log(mantenimientos);
                 }
             });
         } catch (error) {
@@ -72,7 +72,7 @@ function MantenimientoList() {
         if (id_car) {
             getMantenimientos();
         }
-    }, []);
+    }, [id_car]);
 
     return (
         <React.Fragment>
@@ -111,10 +111,11 @@ function MantenimientoList() {
                                                 <thead>
                                                     <tr className='text-center'>
                                                         <th scope="col">#</th>
+                                                        <th scope="col">Placa del Vehiculo</th>
                                                         <th scope="col">Kilometraje</th>
-                                                        <th scope="col">Nombre</th>
-                                                        <th scope="col">Precio del Mantenimiento</th>
-                                                        <th scope="col">Operacion</th>
+                                                        <th scope="col">Costo del Mantenimiento</th>
+                                                        <th scope="col">Fecha</th>
+                                                        <th scope="col">Forma de Pago</th>
                                                         <th scope="col">Opciones</th>
                                                     </tr>
                                                 </thead>
@@ -123,7 +124,7 @@ function MantenimientoList() {
                                                         (() => {
                                                             return (
                                                                 mantenimientos.map((mantenimiento, index) => (
-                                                                    <Mantenimiento key={mantenimiento.pk} id_mant={mantenimiento.pk} mantenimiento={mantenimiento.fields} listMantenimientos={getMantenimientos} count={index + 1} />
+                                                                    <Mantenimiento key={mantenimiento.id} mantenimiento={mantenimiento} listMantenimientos={getMantenimientos} count={index + 1} />
                                                                 ))
                                                             )
                                                         })()

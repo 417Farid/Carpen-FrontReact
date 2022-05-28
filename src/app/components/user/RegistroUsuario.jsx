@@ -72,7 +72,7 @@ function RegistroUsuario() {
                     <h3 className="display-4 text-center">Registrarse</h3>
                     <form onSubmit={handleSubmit} >
                       <div className="form-group">
-                        <label>Nombres</label>
+                        <label className="required">Nombres</label>
                         <input
                           id="nombre"
                           type="text"
@@ -85,7 +85,7 @@ function RegistroUsuario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Apellidos</label>
+                        <label className="required">Apellidos</label>
                         <input
                           id="apellido"
                           type="text"
@@ -98,7 +98,7 @@ function RegistroUsuario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Tipo de Documento</label>
+                        <label className="required">Tipo de Documento</label>
                         <select
                           id="tipoDocumento"
                           className="form-select"
@@ -114,7 +114,7 @@ function RegistroUsuario() {
                         </select>
                       </div>
                       <div className="form-group">
-                        <label>Número Documento</label>
+                        <label className="required">Número Documento</label>
                         <input
                           id="numeroDocumento"
                           type="number"
@@ -128,7 +128,7 @@ function RegistroUsuario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Ciudad</label>
+                        <label className="required">Ciudad</label>
                         <input
                           id="ciudad"
                           type="text"
@@ -142,7 +142,7 @@ function RegistroUsuario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Email</label>
+                        <label className="required">Email</label>
                         <input
                           id="email"
                           type="email"
@@ -155,7 +155,7 @@ function RegistroUsuario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Contraseña</label>
+                        <label className="required">Contraseña</label>
                         <input
                           id="password"
                           type="password"
@@ -166,6 +166,25 @@ function RegistroUsuario() {
                           onChange={handleInputChange}
                           required
                         />
+                      </div>
+                      <div className="form-check">
+                        <input
+                          id="customCheck1"
+                          type="checkbox"
+                          className="form-check-input"
+                          onClick={()=>{
+                            let password = document.getElementById("password");
+                            let checkbox = document.getElementById("customCheck1");
+                            if(checkbox.checked===true){
+                              password.setAttribute("type", "text")
+                            }else{
+                              password.setAttribute("type", "password")
+                            }
+                          }}
+                        />
+                        <label htmlFor="customCheck1" className="form-check-label">
+                          Mostrar Contraseña
+                        </label>
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
@@ -178,7 +197,7 @@ function RegistroUsuario() {
                         </button>
                       </div>
                       <p className="forgot-password text-right">
-                        Already registered{" "}
+                        Ya está registrado{" "}
                         <a type="button" href="/">
                           iniciar sesión?
                         </a>

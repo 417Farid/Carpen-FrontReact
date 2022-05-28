@@ -6,6 +6,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import * as authService from '../../auth/auth.service';
 import { alert_error, alert_success, firstCharUpper, generateClick } from '../../util/functions';
+import {cargarImagenRepuesto, eliminarImagen} from '../../util/firebase';
 
 function RegistrarRepuesto() {
 
@@ -31,18 +32,24 @@ function RegistrarRepuesto() {
         const response = await authService.updateRepuesto(repuesto, id_repuesto);
         if (parseInt(response.status) === 200) {
           alert_success("Exito!", "Repuesto actualizado correctamente.");
-          setTimeout(() => { navigate("/repuestos") }, 1500);
+          setTimeout(() => { navigate(-1) }, 1500);
         } else {
           alert_error("Error!", "No se pudo actualizar el repuesto.");
         }
       } else {
-        const response = await authService.addRepuesto(repuesto, id_tipoRepuesto);
-        if (parseInt(response.status) === 201) {
-          alert_success("Exito!", "Repuesto agregado correctamente.");
-          setTimeout(() => { navigate("/repuestos") }, 1500);
+        if (repuesto.foto !== undefined && repuesto.foto !== "" && repuesto.foto !== "") {
+          const response = await authService.addRepuesto(repuesto, id_tipoRepuesto);
+          if (parseInt(response.status) === 201) {
+            alert_success("Exito!", "Repuesto agregado correctamente.");
+            setTimeout(() => { navigate(-1) }, 1500);
+          } else {
+            eliminarImagen(repuesto.foto, "repuestos");
+            alert_error("Error!", "No se pudo agregar el repuesto.");
+          }
         } else {
-          alert_error("Error!", "No se pudo agregar el repuesto.");
+          alert_error("Oops!...", "No se pudo agregar el vehiculo.");
         }
+
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +101,7 @@ function RegistrarRepuesto() {
             <form className="form-control" onSubmit={handleSubmit}>
               <div className="row row-sm-auto">
                 <div className="form-group py-2">
-                  <label>Nombre del Repuesto</label>
+                  <label className="required">Nombre del Repuesto</label>
                   <input
                     id="nombre"
                     type="text"
@@ -108,7 +115,7 @@ function RegistrarRepuesto() {
                   />
                 </div>
                 <div className="form-group py-2">
-                  <label>Descripcion del Repuesto</label>
+                  <label className="required">Descripcion del Repuesto</label>
                   <input
                     id="descripcion"
                     type="text"
@@ -122,7 +129,7 @@ function RegistrarRepuesto() {
                   />
                 </div>
                 <div className="form-group py-2">
-                  <label>Marca del Repuesto</label>
+                  <label className="required">Marca del Repuesto</label>
                   <input
                     id="marca"
                     type="text"
@@ -136,7 +143,7 @@ function RegistrarRepuesto() {
                   />
                 </div>
                 <div className="form-group py-2">
-                  <label>Fabricante del Repuesto</label>
+                  <label className="required">Fabricante del Repuesto</label>
                   <input
                     id="fabricante"
                     type="text"
@@ -150,7 +157,7 @@ function RegistrarRepuesto() {
                   />
                 </div>
                 <div className="form-group py-2">
-                  <label>Clase del Repuesto</label>
+                  <label className="required">Clase del Repuesto</label>
                   <select
                     id="claseRepuesto"
                     className="form-select"
@@ -165,23 +172,25 @@ function RegistrarRepuesto() {
                     <option value="Alternativo">Alternativo</option>
                   </select>
                 </div>
-                <div className="form-group py-2" hidden={id_repuesto?true:false}>
-                  <label>Foto del Repuesto</label>
+                <div className="form-group py-2" hidden={id_repuesto ? true : false}>
+                  <label className="required">Foto del Repuesto</label>
                   <input
                     id="formFile"
                     className="form-control"
                     type="file"
                     accept="image/png, image/jpeg"
-                    required
+                    required={id_repuesto ? false : true}
                   />
                   <input type="text" name="foto" id="foto" value={repuesto.foto}
                     onChange={handleInputChange} hidden />
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <button className="btn btn-primary btn-block my-2" type="button" onClick={()=>{
-                  if(id_repuesto){
+                <button className="btn btn-primary btn-block my-2" type="button" onClick={() => {
+                  if (id_repuesto) {
                     generateClick();
+                  }else{
+                    cargarImagenRepuesto("repuestos");
                   }
                 }}>
                   {
@@ -191,7 +200,7 @@ function RegistrarRepuesto() {
                   }
                 </button>
                 <button type="button" className="btn btn-secondary btn-block my-2 mx-2" onClick={() => navigate(-1)}>Regresar</button>
-                  <button id="btn_register" type="submit" hidden></button>
+                <button id="btn_register" type="submit" hidden></button>
               </div>
             </form>
           </div>

@@ -14,15 +14,32 @@ import * as authService from "../../auth/auth.service";
 
 const Operacion = ({ operacion, listOperaciones, count }) => {
     const navigate = useNavigate();
+    const [opera, setOpera] = useState({
+        id: "",
+        nombre: "",
+        descripcion: "",
+    });
+
+    useEffect(() => {
+        if (operacion.operacion) {
+            authService.findOperacion(operacion.operacion).then(response => {
+                if (response.error === "") {
+                    setOpera(response.operacion);
+                }
+            });
+        } else {
+            setOpera(operacion);
+        }
+    }, [])
 
     return (
-        <tr className='text-center' key={operacion.id}>
+        <tr className='text-center' key={opera.id}>
             <th scope="col">{count}</th>
-            <td scope="col">{operacion.nombre}</td>
-            <td scope="col">{operacion.descripcion}</td>
+            <td scope="col">{opera.nombre}</td>
+            <td scope="col">{opera.descripcion}</td>
             <td scope='col'>
-                <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + operacion.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + operacion.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + opera.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + opera.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
                 <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -30,6 +47,8 @@ const Operacion = ({ operacion, listOperaciones, count }) => {
 }
 
 function OperacionList() {
+    const { id_taller } = useParams();
+
     const [operaciones, setOperaciones] = useState([]);
     const navigate = useNavigate();
 
@@ -44,12 +63,28 @@ function OperacionList() {
         }
     };
 
+    const getOperaciones = async () => {
+        try {
+            authService.getOperaciones_Taller(id_taller).then(response => {
+                if (response.error === "") {
+                    setOperaciones(response.operaciones);
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleBuscar = () => {
     }
 
     useEffect(() => {
-        if (operaciones.length === 0) {
-            listOperaciones();
+        if (id_taller) {
+            getOperaciones();
+        } else {
+            if (operaciones.length === 0) {
+                listOperaciones();
+            }
         }
     }, []);
 
@@ -92,14 +127,14 @@ function OperacionList() {
                                                         <th scope="col">#</th>
                                                         <th scope="col">Nombre</th>
                                                         <th scope="col">Descripcion</th>
-                                                        <th scope="col">Operacion</th>
+                                                        <th scope="col">Opciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {(() => {
                                                         return (
                                                             operaciones.map((operacion, index) => (
-                                                                <Operacion key={operacion.id} operacion={operacion} listOperaciones={listOperaciones} count={index + 1} />
+                                                                <Operacion key={operacion.id} operacion={operacion} listOperaciones={id_taller ? getOperaciones : listOperaciones} count={index + 1} />
                                                             ))
                                                         )
                                                     })()}

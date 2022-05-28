@@ -86,7 +86,7 @@ function RegistrarMarca() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Nombre de la Marca</label>
+                    <label className="required">Nombre de la Marca</label>
                     <input
                       id="nombre"
                       type="text"
@@ -100,7 +100,7 @@ function RegistrarMarca() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion de la Marca</label>
+                    <label className="required">Descripcion de la Marca</label>
                     <input
                       id="descripcion"
                       type="text"
@@ -110,6 +110,7 @@ function RegistrarMarca() {
                       value={marca.descripcion}
                       onChange={handleInputChange}
                       maxLength="200"
+                      required
                     />
                   </div>
                 </div>

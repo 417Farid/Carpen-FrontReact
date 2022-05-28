@@ -33,7 +33,34 @@ export async function cargarImagen(carpeta) {
             .then((url) => {
                 let foto = document.getElementById("foto");
                 foto.value=url;
-                let button = document.getElementById("btn_register_car");
+                let button = document.getElementById("btn_register");
+                button.click();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+};
+
+export async function cargarImagenRepuesto(carpeta) {
+    let inputFile = document.getElementById("formFile");
+    if (inputFile.files.length === 0) {
+        alert_error("Oops!", "Seleccione una imagen primero.")
+        return;
+    } else {
+        let file = inputFile.files[0];
+        const fileName = file.name.toString();
+        let path = modificarNameRepuesto(fileName);
+        let imagenRef = carpeta + "/" + path;
+        let storageRef = ref(getStorage(firebaseApp), imagenRef);
+        const task = await uploadBytes(storageRef, file);
+
+        // Get the download URL
+        getDownloadURL(task.ref)
+            .then((url) => {
+                let foto = document.getElementById("foto");
+                foto.value=url;
+                let button = document.getElementById("btn_register");
                 button.click();
             })
             .catch((error) => {
@@ -106,6 +133,12 @@ function modificarName(fileName) {
         valor1 += element;
     })
     return hashCode(placa.toUpperCase()) + "-" + valor1 + getExtension(fileName);
+}
+
+function modificarNameRepuesto(fileName) {
+    let nombre = document.getElementById("nombre").value;
+    let array = nombre.split(" ");
+    return hashCode(array[0]) + " - " + array[0] + getExtension(fileName);
 }
 
 function getExtension(fileName) {

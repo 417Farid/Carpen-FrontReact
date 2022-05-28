@@ -6,7 +6,6 @@ import { ResponsiveContainer } from 'recharts';
 import IconButton from '@mui/material/IconButton';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Typography from '@mui/material/Typography';  
 import NoIntervalo from './NoIntervalo';
 
@@ -22,7 +21,6 @@ const Intervalo = ({ intervalo, listIntervalos, count }) => {
             <td scope="col">{intervalo.descripcion}</td>
             <td scope='col'>
                 <IconButton onClick={() => { navigate("/intervalos/editar_intervalo/" + intervalo.id) }} title='Editar Intervalo' style={{ color: "blue" }}><EditIcon /></IconButton>
-                <IconButton onClick={() => { navigate("/intervalos/ver_intervalo/" + intervalo.id) }} title='Ver Intervalo' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
                 <IconButton title='Borrar Intervalo' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -33,7 +31,7 @@ function IntervaloList() {
     const [intervalos, setIntervalos] = useState([]);
     const navigate = useNavigate();
 
-    const IntervaloList = async () => {
+    const listIntervalos = async () => {
         try {
             const response = await authService.getIntervalos();
             if (response.error === "") {
@@ -92,13 +90,14 @@ function IntervaloList() {
                                                         <th scope="col">#</th>
                                                         <th scope="col">Intervalo</th>
                                                         <th scope="col">Descripcion</th>
+                                                        <th scope="col">Opciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {(() => {
                                                         return (
                                                             intervalos.map((intervalo, index) => (
-                                                                <Intervalo key={intervalo.id} operacion={intervalo} listOperaciones={listIntervalos} count={index + 1} />
+                                                                <Intervalo key={intervalo.id} intervalo={intervalo} listIntervalos={listIntervalos} count={index + 1} />
                                                             ))
                                                         )
                                                     })()}

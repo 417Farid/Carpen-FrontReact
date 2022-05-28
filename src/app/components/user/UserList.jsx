@@ -1,10 +1,14 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import IconButton from '@mui/material/IconButton';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 
 import * as authService from '../../auth/auth.service';
 
-const UserItem = ({usuario,count}) => {
+const UserItem = ({ usuario, count }) => {
+
      return (
           <tr key={usuario.id} className='text-center'>
                <td>{count}</td>
@@ -12,33 +16,9 @@ const UserItem = ({usuario,count}) => {
                <td>{usuario.tipoDocumento + " - " + usuario.numeroDocumento}</td>
                <td>{usuario.email}</td>
                <td>{usuario.ciudad}</td>
-               <td>
-                    <div className="dropdown">
-                         <button
-                              id="dropdown-button"
-                              className="btn btn-primary dropdown-toggle"
-                              type="button"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                         >
-                              Opciones
-                         </button>
-                         <ul
-                              className="dropdown-menu dropdown-menu-primary"
-                              aria-labelledby="dropdownMenuButton2"
-                         >
-                              <li>
-                                   <a className="dropdown-item" href="Editar_User.html">
-                                        Modificar
-                                   </a>
-                              </li>
-                              <li>
-                                   <a className="dropdown-item" href="#">
-                                        Eliminar
-                                   </a>
-                              </li>
-                         </ul>
-                    </div>
+               <td scope='col'>
+                    <IconButton title='Editar Usuario' style={{ color: "blue" }}><EditIcon /></IconButton>
+                    <IconButton title='Borrar Usuario' style={{ color: "red" }}><DeleteForever /></IconButton>
                </td>
           </tr>
      );
@@ -50,7 +30,7 @@ function ListaUsuarios() {
 
      const listUsuarios = () => {
           try {
-               authService.user_list().then(response=>{
+               authService.user_list().then(response => {
                     if (response.error === "") {
                          setUsuarios(response.rows);
                          setCantUsers(response.total);
@@ -80,8 +60,8 @@ function ListaUsuarios() {
                <tbody>
                     {(() => {
                          return (
-                              usuarios.map((usuario,index) => (
-                                   <UserItem key={usuario.id} usuario={usuario} count={index+1}/>
+                              usuarios.map((usuario, index) => (
+                                   <UserItem key={usuario.id} usuario={usuario} count={index + 1} />
                               ))
                          )
                     })()}

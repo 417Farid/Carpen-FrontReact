@@ -8,7 +8,7 @@ const API_URL_MANTENIMIENTOS = "http://127.0.0.1:8060/";
 //const API_AUTH_TOKEN = "http://127.0.0.1:8099/api-generate-token/"
 
 /*--------------------------------USUARIO------------------------------------*/
-export const asignar_rol = async (usuario) => {
+/*export const asignar_rol = async (usuario) => {
   const id_rol_user = 2;
 
   return await fetch(API_URL_VEHICULOS + "usuario_roles/", {
@@ -21,7 +21,7 @@ export const asignar_rol = async (usuario) => {
       'rol': parseInt(usuario.id),
     }),
   });
-};
+};*/
 
 export const user_list = async () => {
   return await (await fetch(API_URL_VEHICULOS + "usuarios/")).json();
@@ -50,7 +50,16 @@ export const sign_up = async (user) => {
 };
 
 export const sign_in = async (user) => {
-  return await (await (fetch(API_URL_VEHICULOS + "usuarios/" + 'sign_in/?email=' + user.email + '&password=' + user.password))).json();
+  return await (await (fetch(API_URL_VEHICULOS + "usuarios/sign_in/",{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      'email': String(user.email).trim(),
+      'password': String(user.password).trim(),
+    }),
+  }))).json();
 };
 
 export const userConected = async (response) => {
@@ -72,6 +81,13 @@ export const getUser = async () => {
   return await JSON.parse(sessionStorage.getItem("user"));
 };
 
+/*--------------------------------END------------------------------------*/
+
+/*--------------------------------ROLES------------------------------------*/
+
+export const getRoles_User = async (id_user) =>{
+  return await (await fetch(API_URL_VEHICULOS + "usuario_roles/getRoles_User/?usuario="+id_user)).json()
+}
 /*--------------------------------END------------------------------------*/
 
 /*--------------------------------VEHICULOS------------------------------------*/
@@ -364,6 +380,10 @@ export const getOperaciones = async () => {
   return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "operaciones-mantenimientos/")).json();
 }
 
+export const getOperaciones_Taller = async (id_taller) => {
+  return await (await fetch(API_URL_TALLERES + "tallerOperaciones/getOperaciones/?taller="+id_taller)).json();
+}
+
 export const getIntervalos_Operacion = async (id_operacion) => {
   return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "operaciones-intervalos/getIntervalos/?operacion=" + id_operacion)).json();
 }
@@ -408,9 +428,80 @@ export const getIntervalo = async (id_intervalo) => {
   return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "intervalos-kilometraje/" + id_intervalo + "/")).json();
 }
 
+export const getIntervalos = async ()=>{
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "intervalos-kilometraje/")).json();
+}
+
+export const addIntervalo = async (intervalo) => {
+  return await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "intervalos-kilometraje/", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'intervalo': parseInt(intervalo.intervalo),
+      'descripcion': String(intervalo.descripcion).trim(),
+    }),
+  })
+}
+
+export const updateIntervalo = async (intervalo, id_intervalo) => {
+  return await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "intervalos-kilometraje/" + id_intervalo + "/", {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'intervalo': parseInt(intervalo.intervalo),
+      'descripcion': String(intervalo.descripcion).trim(),
+    }),
+  })
+}
+
+export const findIntervalo = async (id_intervalo) => {
+  return await (await fetch(API_URL_PROGRAMA_MANTENIMIENTO + "intervalos-kilometraje/" + id_intervalo + "/")).json();
+}
 /*--------------------------------END------------------------------------*/
 
 /*--------------------------------MANTENIMIENTOS------------------------------------*/
+
+export const addMantenimiento = async (mantenimiento) => {
+  return await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'placaVehiculo': String(mantenimiento.placaVehiculo).trim(),
+      'kilometraje': String(mantenimiento.kilometraje).trim(),
+      'costo': String(mantenimiento.costo).trim(),
+      'formaPago': String(mantenimiento.formaPago).trim(),
+      'taller': parseInt(mantenimiento.taller),
+      'vehiculo': parseInt(mantenimiento.vehiculo),
+    }),
+  })
+}
+
+export const updateMantenimiento = async (mantenimiento, id_mant) => {
+  return await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/"+id_mant+"/", {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'placaVehiculo': String(mantenimiento.placaVehiculo).trim(),
+      'kilometraje': String(mantenimiento.kilometraje).trim(),
+      'costo': String(mantenimiento.costo).trim(),
+      'formaPago': String(mantenimiento.formaPago).trim(),
+      'taller': parseInt(mantenimiento.taller),
+      'vehiculo': parseInt(mantenimiento.vehiculo),
+    }),
+  })
+}
 
 export const deleteMantenimiento = async (id_mantenimiento) => {
   return await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/" + id_mantenimiento + "/", {
@@ -422,6 +513,10 @@ export const getMantenimientos_Vehiculo = async (id_car) => {
   return await (await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/getMantenimientos/?vehiculo=" + id_car)).json();
 }
 
+export const findMantenimiento = async (id_mant) => {
+  return await (await fetch(API_URL_MANTENIMIENTOS + "mantenimientos/" + id_mant + "/")).json();
+}
+
 /*--------------------------------END------------------------------------*/
 
 /*--------------------------------REPUESTOS------------------------------------*/
@@ -431,7 +526,7 @@ export const getRepuestos = async () => {
 }
 
 export const getRepuestos_Tipo = async (id_tipoRepuesto) => {
-  return await (await fetch(API_URL_TALLERES + "repuestos/getRepuestos/?tipoRepuesto="+id_tipoRepuesto)).json();
+  return await (await fetch(API_URL_TALLERES + "repuestos/getRepuestos_Tipo/?tipoRepuesto="+id_tipoRepuesto)).json();
 }
 
 export const findRepuesto = async (id_repuesto) => {

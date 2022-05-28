@@ -1,3 +1,5 @@
+import * as authService from '../auth/auth.service';
+
 
 import LoginR from '../components/user/LoginR';
 import RegistroUsuario from '../components/user/RegistroUsuario';
@@ -16,6 +18,8 @@ import DetalleTaller from '../components/taller/TallerDetail';
 //Mantenimiento
 import MantenimientoList from '../components/mantenimiento/MantenimientoList';
 import RegistroMantenimiento from '../components/mantenimiento/RegistroMantenimiento';
+import DetalleMantenimiento from '../components/mantenimiento/MantenimientoDetail';
+
 //Operacion
 import RegistrarOperacion from '../components/operacion/RegistrarOperacion';
 import OperacionList from '../components/operacion/OperacionList'
@@ -33,6 +37,11 @@ import DetalleRepuesto from '../components/repuesto/RepuestoDetail';
 //Tipos Repuesto
 import TipoRepuestoList from '../components/tipoRepuesto/TipoRepuestoList';
 import RegistrarTipoRepuesto from '../components/tipoRepuesto/RegistrarTipoRepuesto';
+//Intervalos
+import IntervaloList from '../components/intervalo/IntervaloList';
+import RegistrarIntervalo from '../components/intervalo/RegistrarIntervalo';
+//Programa_Mantenimiento
+//import Programa_Mantenimiento from '../components/programa_mantenimiento/progama_mantenimiento';
 
 const routes = {
      private: [
@@ -57,7 +66,7 @@ const routes = {
                element: <Dashboard contenedor={<DetalleVehiculo/>}/>
           },
           {
-               path: "/home/vehiculo/:id_car/mantenimientos/",
+               path: "/home/vehiculo/:id_car/mantenimientos",
                name: "mantenimientos",
                element: <Dashboard contenedor={<MantenimientoList/>}/>
           },
@@ -70,6 +79,11 @@ const routes = {
                path: "/home/vehiculo/:id_car/mantenimientos/editar_mantenimiento/:id_mant",
                name: "editar_mantenimiento",
                element: <Dashboard contenedor={<RegistroMantenimiento/>}/>
+          },
+          {
+               path: "/home/vehiculo/:id_car/mantenimientos/ver_mantenimiento/:id_mant",
+               name: "ver_mantenimiento",
+               element: <Dashboard contenedor={<DetalleMantenimiento/>}/>
           },
           {
                path: "/usuarios",
@@ -97,14 +111,14 @@ const routes = {
                element: <Dashboard contenedor={<DetalleTaller/>}/>
           },
           {
-               path: "/talleres/operaciones/agregar_operacion/:id",
-               name: "agregar_operacion",
-               element: <Dashboard contenedor={<RegistrarOperacion/>}/>
+               path: "/talleres/:id_taller/ver_operaciones",
+               name: "ver_operaciones",
+               element: <Dashboard contenedor={<OperacionList/>}/>
           },
           {
-               path: "/talleres/repuestos/agregar_repuesto/:id",
-               name: "agregar_repuesto",
-               element: <Dashboard contenedor={<RegistrarRepuesto/>}/>
+               path: "/talleres/:id_taller/ver_repuestos",
+               name: "ver_repuestos",
+               element: <Dashboard contenedor={<RepuestoList/>}/>
           },
           {
                path: "/tiposRepuesto",
@@ -196,6 +210,22 @@ const routes = {
                name: "ver_lineas",
                element: <Dashboard contenedor={<LineaList/>}/>
           },
+          {
+               path: "/intervalos",
+               name: "intervalos",
+               element: <Dashboard contenedor={<IntervaloList/>}/>
+          },
+          {
+               path: "/intervalos/agregar_intervalo",
+               name: "agregar_intervalo",
+               element: <Dashboard contenedor={<RegistrarIntervalo/>}/>
+          },
+          {
+               path: "/intervalos/editar_intervalo/:id",
+               name: "editar_intervalo",
+               element: <Dashboard contenedor={<RegistrarIntervalo/>}/>
+          },
+          
      ],
      public: [
           {
@@ -211,4 +241,20 @@ const routes = {
      ]
 }
 
-export default routes
+const getRoutes_Roles = () => {
+     try {
+          authService.getUser().then(usuario => {
+               authService.getRoles_User(usuario.id).then(response => {
+                    if (response.error === "") {
+                         response.usuario_roles.forEach(element => {
+                              //element.rol
+                         });
+                    }
+               });
+          });
+     } catch (error) {
+          console.log(error);
+     }
+}
+
+export default routes;

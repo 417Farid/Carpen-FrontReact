@@ -4,7 +4,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Home from "@mui/icons-material/Home";
-import CarRepairIcon from '@mui/icons-material/CarRepair';
 import MapIcon from "@mui/icons-material/Map";
 import PeopleIcon from "@mui/icons-material/People";
 import HandymanIcon from '@mui/icons-material/Handyman';
@@ -12,35 +11,80 @@ import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import GarageIcon from '@mui/icons-material/Garage';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import * as authService from '../../auth/auth.service';
+import { alert_error } from "../../util/functions";
 
 export default function MenuList() {
-     const [user, setUser] = React.useState([]);
-     const [admin, setAdmin] = React.useState(false);
+     const [role_admin, setRole_Admin] = React.useState(false);
+     const [role_user, setRole_User] = React.useState(false);
+     const [role_gerente, setRole_Gerente] = React.useState(false);
+
 
      const navigate = useNavigate();
 
-     React.useEffect(() => {
-          const getUsuario = async () => {
-               const usuario = await authService.getUser();
-               setUser(usuario);
-               if (usuario.roles[0] === 1 || usuario.roles[1] === 1) {
-                    setAdmin(true);
-               }
+     const getRoles_User = () => {
+          try {
+               authService.getUser().then(usuario => {
+                    authService.getRoles_User(usuario.id).then(response => {
+                         if (response.error === "") {
+                              response.usuario_roles.forEach(element => {
+                                   switch (element.rol) {
+                                        case 1:
+                                             setRole_Admin(true);
+                                             break;
+                                        case 2:
+                                             setRole_User(true);
+                                             break;
+                                        case 3:
+                                             setRole_Gerente(true);
+                                             break;
+                                        default:
+                                             break;
+                                   }
+                              });
+                         } else {
+                              alert_error("Error!", response.error);
+                         }
+                    });
+               });
+          } catch (error) {
+               console.log(error);
           }
-          getUsuario();
-     }, [admin]);
+     }
+
+     React.useEffect(() => {
+          getRoles_User();
+     }, [role_admin, role_user, role_gerente]);
 
      return (
           <React.Fragment>
-               <ListItemButton onClick={() => { navigate('/home') }}>
-                    <ListItemIcon>
-                         <Home />
-                    </ListItemIcon>
-                    <ListItemText primary="Inicio" />
-               </ListItemButton>
                {
-                    admin
+                    role_user || role_admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/home') }}>
+                              <ListItemIcon>
+                                   <Home />
+                              </ListItemIcon>
+                              <ListItemText primary="Inicio" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               {
+                    role_admin
+                         ?
+                         <ListItemButton onClick={() => { navigate('/programa_mantenimiento') }}>
+                              <ListItemIcon>
+                                   <DashboardCustomizeIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Programa" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               {
+                    role_admin
                          ?
                          <ListItemButton onClick={() => { navigate('/marcas') }}>
                               <ListItemIcon>
@@ -52,7 +96,7 @@ export default function MenuList() {
                          <div hidden></div>
                }
                {
-                    admin
+                    role_admin
                          ?
                          <ListItemButton onClick={() => { navigate('/talleres') }}>
                               <ListItemIcon>
@@ -64,9 +108,9 @@ export default function MenuList() {
                          <div hidden></div>
                }
                {
-                    admin
+                    role_admin
                          ?
-                         <ListItemButton onClick={() => { navigate('/operaciones') }}>
+                         <ListItemButton onClick={() => { navigate('/operaciones') }} >
                               <ListItemIcon>
                                    <HandymanIcon />
                               </ListItemIcon>
@@ -76,9 +120,9 @@ export default function MenuList() {
                          <div hidden></div>
                }
                {
-                    admin
+                    role_admin
                          ?
-                         <ListItemButton>
+                         <ListItemButton onClick={() => { navigate('/intervalos') }}>
                               <ListItemIcon>
                                    <IntegrationInstructionsIcon />
                               </ListItemIcon>
@@ -88,7 +132,7 @@ export default function MenuList() {
                          <div hidden></div>
                }
                {
-                    admin
+                    role_admin
                          ?
                          <ListItemButton onClick={() => { navigate('/tiposRepuesto') }}>
                               <ListItemIcon>
@@ -99,16 +143,20 @@ export default function MenuList() {
                          :
                          <div hidden></div>
                }
-
-               <ListItemButton>
-                    <ListItemIcon>
-                         <MapIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Mapa" />
-               </ListItemButton>
-
                {
-                    admin
+                    role_user || role_admin
+                         ?
+                         <ListItemButton>
+                              <ListItemIcon>
+                                   <MapIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Mapa" />
+                         </ListItemButton>
+                         :
+                         <div hidden></div>
+               }
+               {
+                    role_admin
                          ?
                          <ListItemButton onClick={() => { navigate('/usuarios') }}>
                               <ListItemIcon>

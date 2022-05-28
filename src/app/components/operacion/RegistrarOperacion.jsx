@@ -16,7 +16,20 @@ function RegistrarOperacion() {
   };
 
   const [operacion, setOperacion] = useState(valores_iniciales);
+  const [intervalos, setIntervalos] = useState([]);
   const navigate = useNavigate();
+
+  const getIntervalos = async()=>{
+    try {
+      authService.getIntervalos.then(response => {
+        if (response.error === "") {
+          setIntervalos(response.rows);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,13 +64,15 @@ function RegistrarOperacion() {
   useEffect(() => {
     if (id) {
       authService.findOperacion(id).then(response => {
-          if (response.error === "") {
-            setOperacion(response.operacion);
-          } else {
-            alert_error("Error!", "No se encontró ninguna Operacion con esos datos.");
-            setTimeout(() => { navigate(-1) }, 2000);
-          }
+        if (response.error === "") {
+          setOperacion(response.operacion);
+        } else {
+          alert_error("Error!", "No se encontró ninguna Operacion con esos datos.");
+          setTimeout(() => { navigate(-1) }, 2000);
+        }
       })
+    }else{
+      getIntervalos();
     }
   }, []);
 
@@ -86,7 +101,7 @@ function RegistrarOperacion() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Nombre de la Operacion</label>
+                    <label className="required">Nombre de la Operacion</label>
                     <input
                       id="nombre"
                       type="text"
@@ -100,7 +115,7 @@ function RegistrarOperacion() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion de la Operacion</label>
+                    <label className="required">Descripcion de la Operacion</label>
                     <input
                       id="descripcion"
                       type="text"
@@ -112,6 +127,20 @@ function RegistrarOperacion() {
                       required
                       maxLength="100"
                     />
+                  </div>
+                  <div className="form-group py-2">
+                    <label className="required">Intervalo de kilometraje</label>
+                    <select
+                      id="intervalo"
+                      className="form-select"
+                      name="intervalo"
+                      value={operacion.intervalo}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option defaultValue={""} hidden value="">Intervalos</option>
+                      <option value=""></option>
+                    </select>
                   </div>
                 </div>
                 <div className="d-flex justify-content-center">

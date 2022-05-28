@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Typography from '@mui/material/Typography';
 import * as authService from '../../auth/auth.service';
-import { alert_error, alert_success, firstCharUpper } from '../../util/functions';
+import { alert_error, alert_success} from '../../util/functions';
 
 function RegistrarIntervalo() {
   const { id } = useParams();
@@ -20,7 +20,6 @@ function RegistrarIntervalo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const intervalo = upperCase();
     try {
       if (id) {
         const response = await authService.updateIntervalo(intervalo, id);
@@ -61,14 +60,6 @@ function RegistrarIntervalo() {
     }
   }, []);
 
-  function upperCase() {
-    const valores_iniciales = {
-      intervalo: firstCharUpper(intervalo.intervalo),
-      descripcion: intervalo.descripcion,
-    };
-    return valores_iniciales;
-  };
-
   return (
     <React.Fragment>
       <ResponsiveContainer>
@@ -86,7 +77,7 @@ function RegistrarIntervalo() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="row row-sm-auto">
                   <div className="form-group py-2">
-                    <label>Intervalo</label>
+                    <label className="required">Intervalo del Kilometraje</label>
                     <input
                       id="intervalo"
                       type="text"
@@ -100,7 +91,7 @@ function RegistrarIntervalo() {
                     />
                   </div>
                   <div className="form-group py-2">
-                    <label>Descripcion del Intervalo</label>
+                    <label className="required">Descripcion del Intervalo</label>
                     <input
                       id="descripcion"
                       type="text"

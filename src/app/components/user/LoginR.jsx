@@ -75,7 +75,7 @@ const Login = () => {
                       </div>
                       <div className="mb-3">
                         <input
-                          id="inputPassword"
+                          id="password"
                           type="password"
                           placeholder="Contraseña"
                           className="form-control rounded-pill border-0 shadow-sm px-4 text-primary"
@@ -87,9 +87,18 @@ const Login = () => {
                           id="customCheck1"
                           type="checkbox"
                           className="form-check-input"
+                          onClick={()=>{
+                            let password = document.getElementById("password");
+                            let checkbox = document.getElementById("customCheck1");
+                            if(checkbox.checked===true){
+                              password.setAttribute("type", "text")
+                            }else{
+                              password.setAttribute("type", "password")
+                            }
+                          }}
                         />
                         <label htmlFor="customCheck1" className="form-check-label">
-                          Recordarme
+                          Mostrar Contraseña
                         </label>
                       </div>
                       <div className="row row-cols-2 justify-content-evenly mt-4">
