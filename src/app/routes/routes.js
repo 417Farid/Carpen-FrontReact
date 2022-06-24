@@ -15,6 +15,8 @@ import UserManager from '../components/user/UserManager';
 import TallerList from '../components/taller/TallerList';
 import RegistroTaller from '../components/taller/RegistroTaller';
 import DetalleTaller from '../components/taller/TallerDetail';
+import TallerOperacion from '../components/taller/TallerOperacion';
+
 //Mantenimiento
 import MantenimientoList from '../components/mantenimiento/MantenimientoList';
 import RegistroMantenimiento from '../components/mantenimiento/RegistroMantenimiento';
@@ -41,7 +43,7 @@ import RegistrarTipoRepuesto from '../components/tipoRepuesto/RegistrarTipoRepue
 import IntervaloList from '../components/intervalo/IntervaloList';
 import RegistrarIntervalo from '../components/intervalo/RegistrarIntervalo';
 //Programa_Mantenimiento
-//import Programa_Mantenimiento from '../components/programa_mantenimiento/progama_mantenimiento';
+import PrograMante from '../components/programa_mantenimiento/prograMante';
 
 const routes = {
      private: [
@@ -116,9 +118,14 @@ const routes = {
                element: <Dashboard contenedor={<OperacionList/>}/>
           },
           {
-               path: "/talleres/:id_taller/ver_repuestos",
-               name: "ver_repuestos",
+               path: "/talleres/:id_taller/operacion/:id_opera/ver_repuestos",
+               name: "ver_respuestos_operacion",
                element: <Dashboard contenedor={<RepuestoList/>}/>
+          },
+          {
+               path: "/talleres/:id_taller/agregar_operaciones",
+               name: "agregar_operaciones",
+               element: <Dashboard contenedor={<TallerOperacion/>}/>
           },
           {
                path: "/tiposRepuesto",
@@ -225,7 +232,11 @@ const routes = {
                name: "editar_intervalo",
                element: <Dashboard contenedor={<RegistrarIntervalo/>}/>
           },
-          
+          {
+               path: "/programa_mantenimiento",
+               name: "programa_mantenimiento",
+               element: <Dashboard contenedor={<PrograMante/>}/>
+          },
      ],
      public: [
           {

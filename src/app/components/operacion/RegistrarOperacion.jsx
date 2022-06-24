@@ -16,20 +16,7 @@ function RegistrarOperacion() {
   };
 
   const [operacion, setOperacion] = useState(valores_iniciales);
-  const [intervalos, setIntervalos] = useState([]);
   const navigate = useNavigate();
-
-  const getIntervalos = async()=>{
-    try {
-      authService.getIntervalos.then(response => {
-        if (response.error === "") {
-          setIntervalos(response.rows);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,8 +58,6 @@ function RegistrarOperacion() {
           setTimeout(() => { navigate(-1) }, 2000);
         }
       })
-    }else{
-      getIntervalos();
     }
   }, []);
 
@@ -127,20 +112,6 @@ function RegistrarOperacion() {
                       required
                       maxLength="100"
                     />
-                  </div>
-                  <div className="form-group py-2">
-                    <label className="required">Intervalo de kilometraje</label>
-                    <select
-                      id="intervalo"
-                      className="form-select"
-                      name="intervalo"
-                      value={operacion.intervalo}
-                      onChange={handleInputChange}
-                      required
-                    >
-                      <option defaultValue={""} hidden value="">Intervalos</option>
-                      <option value=""></option>
-                    </select>
                   </div>
                 </div>
                 <div className="d-flex justify-content-center">

@@ -21,6 +21,7 @@ import * as authService from "../../auth/auth.service";
 import { useNavigate } from "react-router-dom";
 import { alert_logout } from "../../util/functions";
 import { logout_firebase } from "../../util/firebase";
+import NavAlert from "./NavAlerts";
 
 function Copyright(props) {
   return (
@@ -127,11 +128,7 @@ function DashboardContent({ contenedor }) {
             >
               C A R P E N
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <NavAlert/>
             <IconButton
               color="inherit"
               onClick={() => {

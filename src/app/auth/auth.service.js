@@ -235,6 +235,10 @@ export const getTalleres = async () => {
   return await fetch(API_URL_TALLERES + "talleres/");
 };
 
+export const getTaller_Operacion = async (id_taller,id_operacion) => {
+  return await (await fetch(API_URL_TALLERES + "tallerOperaciones/getOperacion_Taller/?taller="+id_taller+"&operacion="+id_operacion)).json();
+};
+
 export const deleteTaller = async (id_taller) => {
   return await fetch(API_URL_TALLERES + "talleres/" + id_taller + "/", {
     method: "DELETE",
@@ -284,6 +288,22 @@ export const updateTaller = async (taller, id_taller) => {
 export const findTaller = async (id_taller) => {
   return await fetch(API_URL_TALLERES + "talleres/" + id_taller + "/");
 }
+
+export const addTallerOperacion = async (tallerOperacion) => {
+  //const auth_token = getUserToken();
+  return await fetch(API_URL_TALLERES + "tallerOperaciones/", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      //"Authorization": 'Token '+ auth_token,
+    },
+    body: JSON.stringify({
+      'operacion': parseInt(tallerOperacion.operacion),
+      'taller': parseInt(tallerOperacion.taller),
+      'costo': String(tallerOperacion.costo).trim(),
+    }),
+  });
+};
 
 /*--------------------------------END------------------------------------*/
 
@@ -381,7 +401,7 @@ export const getOperaciones = async () => {
 }
 
 export const getOperaciones_Taller = async (id_taller) => {
-  return await (await fetch(API_URL_TALLERES + "tallerOperaciones/getOperaciones/?taller="+id_taller)).json();
+  return await (await fetch(API_URL_TALLERES + "tallerOperaciones/getOperaciones_Taller/?taller="+id_taller)).json();
 }
 
 export const getIntervalos_Operacion = async (id_operacion) => {
@@ -527,6 +547,10 @@ export const getRepuestos = async () => {
 
 export const getRepuestos_Tipo = async (id_tipoRepuesto) => {
   return await (await fetch(API_URL_TALLERES + "repuestos/getRepuestos_Tipo/?tipoRepuesto="+id_tipoRepuesto)).json();
+}
+
+export const getRepuestos_Operacion = async (id_tallerOperacion) => {
+  return await (await fetch(API_URL_TALLERES + "tallerOperacionRepuesto/getRepuestos_Operacion/?tallerOperacion="+id_tallerOperacion)).json();
 }
 
 export const findRepuesto = async (id_repuesto) => {

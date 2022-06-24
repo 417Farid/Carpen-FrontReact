@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from "react-router-dom";
 import * as authService from '../../auth/auth.service';
 import { alert_error } from "../../util/functions";
-import { initMap } from "../../util/google-maps";
 
 const Taller = ({ taller }) => {
 
@@ -26,9 +25,9 @@ const Taller = ({ taller }) => {
                     </div>
                </div>
                <div className="figure shadow p-3 mt-2 mb-0 bg-body rounded col-12">
-                    <figure id="google_map" className="figure-img img-fluid rounded border">
-                         <img src={"/img/mapa-pam.png"} className="figure-img img-fluid rounded" alt="map-taller" />
-                    </figure>
+                    <div style={{position:'relative',overflow:'hidden',width: '100%',paddingTop:'56.25%',}}>
+                         <iframe style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, width: '100%', height: '100%',}} src="https://maps.google.com/maps?q=universidad%20de%20pamplona&t=&z=13&ie=UTF8&iwloc=&output=embed" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" allowFullScreen></iframe>
+                    </div>
                     <figcaption className="figure-caption text-end">{taller.nombre + ' - Longitud: ' + taller.longitud + " / Latitud: " + taller.latitud}</figcaption>
                </div>
           </div>

@@ -5,7 +5,6 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentTurnedIn from '@mui/icons-material/AssignmentTurnedIn';
-import HandymanIcon from '@mui/icons-material/Handyman';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -42,7 +41,6 @@ const Taller = ({ taller, listTalleres,count}) => {
         <IconButton onClick={()=>{navigate("/talleres/editar_taller/"+taller.id)}} title='Editar Taller' style={{ color: "blue" }}><EditIcon /></IconButton>
         <IconButton onClick={()=>{navigate("/talleres/ver_taller/"+taller.id)}} title='Ver Taller' style={{ color: "grey" }}><PageviewIcon /></IconButton>
         <IconButton onClick={()=>{navigate("/talleres/"+taller.id+"/ver_operaciones")}} title='Ver Operaciones Mantenimiento' style={{ color: "green" }}><AssignmentTurnedIn /></IconButton>
-        <IconButton onClick={()=>{navigate("/talleres/"+taller.id+"/ver_repuestos")}} title='Ver Repuestos' style={{ color: "orange" }}><HandymanIcon /></IconButton>
         <IconButton onClick={()=>{deleteTaller()}} title='Borrar Taller' style={{ color: "red" }}><DeleteForever /></IconButton>
       </td>
     </tr>

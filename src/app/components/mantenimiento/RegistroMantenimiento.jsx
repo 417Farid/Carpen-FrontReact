@@ -157,7 +157,6 @@ function RegistroMantenimiento() {
                     value={mantenimiento.costo}
                     onChange={handleInputChange}
                     required
-                    maxLength="10"
                   />
                 </div>
                 <div className="form-group py-2">

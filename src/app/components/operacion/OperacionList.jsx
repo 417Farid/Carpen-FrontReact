@@ -7,12 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import HandymanIcon from '@mui/icons-material/Handyman';
 import Typography from '@mui/material/Typography';
 import NoOperacion from './NoOperacion';
 
 import * as authService from "../../auth/auth.service";
 
 const Operacion = ({ operacion, listOperaciones, count }) => {
+    const {id_taller}= useParams();
     const navigate = useNavigate();
     const [opera, setOpera] = useState({
         id: "",
@@ -40,6 +42,7 @@ const Operacion = ({ operacion, listOperaciones, count }) => {
             <td scope='col'>
                 <IconButton onClick={() => { navigate("/operaciones/editar_operacion/" + opera.id) }} title='Editar Operacion' style={{ color: "blue" }}><EditIcon /></IconButton>
                 <IconButton onClick={() => { navigate("/operaciones/ver_operacion/" + opera.id) }} title='Ver Operacion' style={{ color: "green" }}><RemoveRedEyeIcon /></IconButton>
+                <IconButton onClick={() => { navigate("/talleres/"+id_taller+"/operacion/"+opera.id+"/ver_repuestos") }} title='Ver Repuestos' style={{ color: "orange" }}><HandymanIcon /></IconButton>
                 <IconButton title='Borrar Operacion' style={{ color: "red" }}><DeleteForever /></IconButton>
             </td>
         </tr>
@@ -101,7 +104,7 @@ function OperacionList() {
                                 return (
                                     <nav className="navbar navbar-light bg-light">
                                         <div className="container-fluid">
-                                            <button type='button' onClick={() => { navigate('/operaciones/agregar_operacion') }} className='btn btn-primary m-2'>Agregar Operacion</button>
+                                            <button type='button' onClick={() => { id_taller?navigate('/talleres/'+id_taller+'/agregar_operaciones'):navigate('/operaciones/agregar_operacion') }} className='btn btn-primary m-2'>Agregar Operacion</button>
                                             <form className="d-flex">
                                                 <input id='buscarOperacion' className="form-control me-2" type="search" placeholder="Buscar Operacion Nombre" aria-label="Buscar" />
                                                 <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>

@@ -15,9 +15,10 @@ import PageviewIcon from '@mui/icons-material/Pageview';
 import { alert_error, alert_success } from '../../util/functions';
 
 
-const Repuesto = ({ repuesto, listRepuestos, count, id_repuesto}) => {
-  const {id_tipoRepuesto} = useParams();
+const Repuesto = ({ repuesto, listRepuestos, count, id_repuesto }) => {
+  const { id_tipoRepuesto, id_opera, id_taller } = useParams();
   const navigate = useNavigate();
+  const [Repuesto, setRepuesto] = useState(repuesto);
 
   const deleteTaller = async () => {
     /*try {
@@ -33,25 +34,47 @@ const Repuesto = ({ repuesto, listRepuestos, count, id_repuesto}) => {
     }*/
   }
 
+  useEffect(() => {
+    if (id_opera&&id_taller){
+      try {
+        authService.findRepuesto(repuesto.repuesto).then(response=>{
+          if(response.error===""){
+            setRepuesto(response.repuesto);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [Repuesto]);
+
   return (
-    <tr key={repuesto.id} className="text-center">
-      <th scope="row">{count}</th>
-      <td>{repuesto.nombre}</td>
-      <td>{repuesto.marca}</td>
-      <td>{repuesto.fabricante}</td>
-      <td>{repuesto.claseRepuesto}</td>
-      <td className='row-cols-2 row-cols-md-auto'>
-        <IconButton onClick={() => { navigate("/tiposRepuesto/"+id_tipoRepuesto+"/ver_repuestos/editar_repuesto/" + id_repuesto) }} title='Editar Repuesto' style={{ color: "blue" }}><EditIcon /></IconButton>
-        <IconButton onClick={() => { navigate("/tiposRepuesto/"+id_tipoRepuesto+"/ver_repuestos/repuesto/" + id_repuesto) }} title='Ver Repuesto' style={{ color: "grey" }}><PageviewIcon /></IconButton>
-        <IconButton onClick={() => { deleteTaller() }} title='Borrar Repuesto' style={{ color: "red" }}><DeleteForever /></IconButton>
-      </td>
-    </tr>
+    <>
+      {
+        Repuesto
+          ?
+          <tr key={Repuesto.id} className="text-center">
+            <th scope="row">{count}</th>
+            <td>{Repuesto.nombre}</td>
+            <td>{Repuesto.marca}</td>
+            <td>{Repuesto.fabricante}</td>
+            <td>{Repuesto.claseRepuesto}</td>
+            <td className='row-cols-2 row-cols-md-auto'>
+              <IconButton onClick={() => { id_taller&&id_opera?navigate("/tiposRepuesto/" + Repuesto.tipoRepuesto + "/ver_repuestos/editar_repuesto/" + Repuesto.id):navigate("/tiposRepuesto/" + id_tipoRepuesto + "/ver_repuestos/editar_repuesto/" + id_repuesto) }} title='Editar Repuesto' style={{ color: "blue" }}><EditIcon /></IconButton>
+              <IconButton onClick={() => { id_taller&&id_opera?navigate("/tiposRepuesto/" + Repuesto.tipoRepuesto + "/ver_repuestos/repuesto/" + Repuesto.id):navigate("/tiposRepuesto/" + id_tipoRepuesto + "/ver_repuestos/repuesto/" + id_repuesto) }} title='Ver Repuesto' style={{ color: "grey" }}><PageviewIcon /></IconButton>
+              <IconButton onClick={() => { deleteTaller() }} title='Borrar Repuesto' style={{ color: "red" }}><DeleteForever /></IconButton>
+            </td>
+          </tr>
+          :
+          <></>
+      }
+    </>
   );
 }
 
 
 function RepuestoList() {
-  const {id_tipoRepuesto,id_taller} = useParams();
+  const { id_tipoRepuesto, id_taller, id_opera } = useParams();
   const [repuestos, setRepuestos] = useState([]);
   const navigate = useNavigate();
 
@@ -66,11 +89,29 @@ function RepuestoList() {
     }
   };
 
-  const getRepuestos = ()=>{
+  const getRepuestos_Tipo = () => {
     try {
       authService.getRepuestos_Tipo(id_tipoRepuesto).then(response => {
         if (response.error === "") {
           setRepuestos(response.repuestos);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getRepuestos_Operacion = () => {
+    try {
+      authService.getTaller_Operacion(id_taller, id_opera).then(response => {
+        if (response.error === "") {
+          authService.getRepuestos_Operacion(response.operacion.id).then(response => {
+            if (response.error === "") {
+              setRepuestos(response.repuestos_operacion);
+            }
+          });
+        } else {
+          alert_error("Error!", "No se encontró el taller operacion con esos datos.");
         }
       });
     } catch (error) {
@@ -90,10 +131,14 @@ function RepuestoList() {
 
   useEffect(() => {
     if (id_tipoRepuesto) {
-      getRepuestos();
+      getRepuestos_Tipo();
     } else {
-      if (repuestos.length === 0) {
-        listRepuestos();
+      if (id_taller && id_opera) {
+        getRepuestos_Operacion();
+      } else {
+        if (repuestos.length === 0) {
+          listRepuestos();
+        }
       }
     }
   }, [])
@@ -111,7 +156,7 @@ function RepuestoList() {
                 return (
                   <nav className="navbar navbar-light bg-light">
                     <div className="container-fluid">
-                      <button type='button' onClick={() => { navigate('/tiposRepuesto/'+id_tipoRepuesto+'/ver_repuestos/agregar_repuesto') }} className='btn btn-primary m-2'>Agregar Repuesto</button>
+                      <button type='button' onClick={() => { navigate('/tiposRepuesto/' + id_tipoRepuesto + '/ver_repuestos/agregar_repuesto') }} className='btn btn-primary m-2'>Agregar Repuesto</button>
                       <form className="d-flex">
                         <input id='buscarRepuestos' className="form-control me-2" type="search" placeholder="Buscar Repuesto Nombre" aria-label="Buscar" />
                         <button className="btn btn-success" onClick={handleBuscar} type="button">Buscar</button>
@@ -145,13 +190,13 @@ function RepuestoList() {
                         <tbody>
                           {
                             (() => {
-                              if(id_tipoRepuesto){
+                              if (id_tipoRepuesto) {
                                 return (
                                   repuestos.map((repuesto, index) => (
-                                    <Repuesto key={repuesto.pk} repuesto={repuesto.fields} id_repuesto={repuesto.pk} listRepuestos={getRepuestos} count={index + 1} />
+                                    <Repuesto key={repuesto.pk} repuesto={repuesto.fields} id_repuesto={repuesto.pk} listRepuestos={getRepuestos_Tipo} count={index + 1} />
                                   ))
                                 )
-                              }else{
+                              } else {
                                 return (
                                   repuestos.map((repuesto, index) => (
                                     <Repuesto key={repuesto.id} repuesto={repuesto} listRepuestos={listRepuestos} count={index + 1} />
@@ -174,4 +219,4 @@ function RepuestoList() {
   );
 }
 
-export default RepuestoList
+export default RepuestoList;
